@@ -1,0 +1,12 @@
+/* styles.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* 배경 색상 설정 */
+    /* 또는 */
+    /* background-image: url('your-image-url.jpg'); */ /* 배경 이미지 설정 */
+    /* background-size: cover; */ /* 이미지가 창에 맞도록 설정 */
+    /* 추가적인 스타일 설정 */
+  }
+  
