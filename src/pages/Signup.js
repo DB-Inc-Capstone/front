@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './Signup.css';
 
@@ -8,10 +9,11 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-  
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+        navigate('/worker/login'); // 임시로 회원가입 버튼 누르면 이동하게끔
         try {
           const response = await axios.post('https://localhost:3000/worker/signup', {
             id,
@@ -22,6 +24,8 @@ const Signup = () => {
     
           console.log('SignUp successful!', response.data);
           // 여기에서 회원가입 성공 후의 동작을 수행
+          //navigate('/worker/login');
+
         } catch (error) {
           console.error('Error during SignUp:', error.response ? error.response.data : error.message);
           // 여기에서 오류 처리를 수행
