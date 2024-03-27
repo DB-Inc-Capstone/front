@@ -1,0 +1,47 @@
+/* ModifyPWPage.css */
+
+.ModifyPW-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: lightgray;
+}
+
+.ModifyPW-form {
+    width: 700px;
+    padding: 20px;
+    border-radius: 15px;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ModifyPW-namebox {
+    width: 110px;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.ModifyPW-button {
+    width: 70px;
+    padding: 10px;
+    margin-left: 20px;
+    background-color: darkgray;
+    color: black;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    text-align: center;
+}

@@ -1,6 +1,6 @@
 /* LoginPage.css */
 
-.login-container {
+.Login-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,7 +8,7 @@
   background-color: lightgray;
 }
 
-.login-form {
+.Login-form {
   width: 700px;
   padding: 20px;
   border-radius: 15px;
@@ -19,15 +19,36 @@
   align-items: center;
 }
 
-.namebox {
+.Login-namebox {
   width: 70px;
   text-align: left;
   margin-bottom: 5px;
 }
 
-label {
+.Login-label {
   display: block;
   margin-bottom: 5px;
+}
+
+.Login-button {
+  width: 300px;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: darkgray;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.Login-submit {
+  width: 300px;
+  padding: 10px;
+  background-color: darkgray;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
 }
 
 input {
@@ -38,15 +59,4 @@ input {
   box-sizing: border-box;
   margin-bottom: 12px;
   text-align: center;
-}
-
-button {
-  width: 300px;
-  padding: 10px;
-  margin-top: 10px;
-  background-color: darkgray;
-  color: black;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
 }
