@@ -9,10 +9,6 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleFindID = async (e) => {
-        navigate("/worker/findid");
-    };
-
     const handleFindPW = async (e) => {
         navigate("/worker/findpw");
     };
@@ -68,12 +64,6 @@ const Login = () => {
                     type="submit"
                     onClick={handleSubmit}>
                     로그인
-                </button>
-                <button
-                    className="Login-button"
-                    type="button"
-                    onClick={handleFindID}>
-                    아이디 찾기
                 </button>
                 <button
                     className="Login-button"
