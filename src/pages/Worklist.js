@@ -3,12 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import MenuBar from "../components/MenuBar";
+
 const Worklist = () => {
     const navigate = useNavigate();
 
     return (
         <div className="container">
-            <h1>hello</h1>
+            <MenuBar />
+            <div className="List">
+                hello
+            </div>
         </div>
     );
 };
