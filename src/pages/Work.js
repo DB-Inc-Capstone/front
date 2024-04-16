@@ -2,6 +2,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
+import MenuBar from "../components/MenuBar";
 import './Work.css'
 
 const Work = () => {
@@ -45,31 +47,6 @@ const Work = () => {
         // }).then(() => fetchData());
     };
 
-    const handleTaskBoardClick = () => {
-        // 작업보드 버튼이 클릭되었을 때 실행될 코드
-    };
-    
-    const handleTaskListClick = () => {
-        navigate("/work/worklist");
-    };
-    
-    const handleTimelineClick = () => {
-        // 타임라인 버튼이 클릭되었을 때 실행될 코드
-    };
-    
-    const handleIssuesClick = () => {
-        // 이슈 버튼이 클릭되었을 때 실행될 코드
-    };
-    
-    const handleLogout = () => {
-        // 로그아웃 버튼이 클릭되었을 때 실행될 코드
-    };
-
-    const handleMainClick = () => {
-        // 로그아웃 버튼이 클릭되었을 때 실행될 코드
-    };
-
-
     useEffect(() => {
         fetchData();
     }, []);
@@ -79,16 +56,7 @@ const Work = () => {
 
     return (
         <div className="container">
-            <div className="menu-bar">
-                <button onClick={handleTaskBoardClick}>작업보드</button>
-                <button onClick={handleTaskListClick}>작업리스트</button>
-                <button onClick={handleTimelineClick}>타임라인</button>
-                <button onClick={handleIssuesClick}>이슈</button>
-                <button onClick={handleLogout}>로그아웃</button>
-            </div>
-            <div className="search-bar">
-                <button onClick={handleMainClick}>작업보드</button>
-            </div>
+            <MenuBar />
             <div className="add-todo">
                 <h1>작업 추가</h1>
                 <form onSubmit={onSubmitHandler}>

@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    height: 100vh; /* Updated: Set container height to 100% of viewport height */
+}
+
+.menu-bar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 150px;
+    border-right: black 1px solid; /* Added: Set right border color to black */
+    background-color: rgb(229, 229, 229);
+}
+
+.menu-bar button {
+    width: 100%;
+    height: 50px;
+    border-top: none;
+    border-bottom: 1px solid black; /* Added: Set bottom border color to black */
+    border-right: none;
+    border-radius: 0; /* Added: Remove border radius */
+    margin-top: 0; /* Added: Remove top margin */
+    margin-bottom: 0; /* Added: Remove bottom margin */
+    background-color:  rgb(229, 229, 229); /* Added: Set button background color to lightgray */
+}
+
+.menu-bar button:last-child {
+    margin-top: auto;
+    border-top: 1px solid black; /* Added: Set top border color to black */
+}
+
+.search-bar {
+    position: fixed;
+    display: flex;
+    height: 100px;
+    background-color:  rgb(229, 229, 229);
+    border-bottom: 1px solid black; /* Added: Set bottom border color to black */
+    border-left: 1px solid black;
+    left : 150px;
+    right : 0;
+}
+
+.search-bar button {
+    margin: auto; /*세로 정렬*/
+    width: 100px;
+    height: 50px;
+    margin-left: 20px;
+    font-size: 20px;
+    background-color:  rgb(229, 229, 229);
+    border: none;
+    cursor: pointer;
+    font-weight: bold; /* 텍스트를 굵게 표시 */
+    font-size: 20px; /* 텍스트 크기 조절 */
+}
