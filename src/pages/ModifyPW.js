@@ -12,17 +12,16 @@ const ModifyPW = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        navigate("/worker/login");
-        console.log(pswd, check_pswd);
 
         try {
-            const response = await axios.post('https://localhost:3000/worker/modifypw', {
+            const response = await axios.post('http://localhost:4000/worker/modifypw', {
                 pswd,
                 check_pswd
             });
 
             console.log('ModifyPW successful!', response.data);
             // 여기에서 로그인 성공 후의 동작을 수행
+            navigate('/worker/login');
         } catch (error) {
             console.error('Error during ModifyPW:', error.response ? error.response.data : error.message);
             // 여기에서 오류 처리를 수행
@@ -31,7 +30,7 @@ const ModifyPW = () => {
 
     return (
         <div className="ModifyPW-container">
-            <form className="ModifyPW-form">
+            <form className="ModifyPW-form" onSubmit={handleSubmit}>
                 <label>
                     <div className="ModifyPW-namebox">비밀번호</div>
                     <input
@@ -55,8 +54,7 @@ const ModifyPW = () => {
 
                 <button
                     className="ModifyPW-button"
-                    type="submit"
-                    onClick={handleSubmit}>
+                    type="submit">
                     확인
                 </button>
             </form>

@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import './Login.css'
+const port = 9001;
 
 const Login = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleFindPW = async (e) => {
@@ -19,25 +21,31 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(id, password);
         
         try {
-            const response = await axios.post('https://localhost:3000/worker/login', {
-                id,
-                password
+            const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/login', {
+                username: id,
+                password: password
             });
 
+            setErrorMessage("로그인 성공");
             console.log('Login successful!', response.data);
-            // 여기에서 로그인 성공 후의 동작을 수행
         } catch (error) {
+            let code = error.response.status;
+            if (code === 400) { // 로그인 실패
+                setErrorMessage("아이디나 비밀번호가 올바르지 않습니다.");
+            } else { // 서버 오류
+                setErrorMessage("서버 오류로 로그인에 실패하였습니다.");
+            }
             console.error('Error during Login:', error.response ? error.response.data : error.message);
-            // 여기에서 오류 처리를 수행
         }
     };
 
     return (
         <div className="Login-container">
-            <form className="Login-form">
+            <form className="Login-form" onSubmit={handleSubmit}>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            <br />
                 <label>
                     <div className="Login-namebox">아이디</div>
                     <input
@@ -61,8 +69,7 @@ const Login = () => {
 
                 <button 
                     className="Login-submit"
-                    type="submit"
-                    onClick={handleSubmit}>
+                    type="submit">
                     로그인
                 </button>
                 <button

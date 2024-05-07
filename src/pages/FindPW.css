@@ -9,26 +9,28 @@
 }
 
 .FindPW-form {
-    width: 700px;
+    width: center;
     padding: 20px;
     border-radius: 15px;
     margin: auto;
     text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* 수정: 수직 정렬을 왼쪽으로 변경 */
 }
 
 .FindPW-namebox {
-    width: 100px;
+    width: 300px;
     text-align: left;
     margin-bottom: 5px;
+    align-self: flex-start; /* 수정: 왼쪽 정렬 */
 }
 
 .FindPW-idbox {
-    width: 100px;
+    width: 300px;
     text-align: left;
     margin-bottom: 5px;
+    align-self: flex-start; /* 수정: 왼쪽 정렬 */
 }
 
 .FindPW-button {

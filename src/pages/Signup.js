@@ -3,40 +3,53 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './Signup.css';
+const port = 9001;
 
 const Signup = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [phone_number, setPhone] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleReturn = async (e) => {
+    navigate("/worker/login");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(id, password, email, name);
-
-    navigate('/worker/login'); // 임시로 회원가입 버튼 누르면 이동하게끔
+    
     try {
-      const response = await axios.post('https://localhost:3000/worker/signup', {
-        id,
-        password,
-        email,
-        name,
+      const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker', {
+        username: id,
+        password: password,
+        nickname: name,
+        phoneNumber: phone_number,
+        email: email
       });
-
-      console.log('SignUp successful!', response.data);
-      // 여기에서 회원가입 성공 후의 동작을 수행
-      //navigate('/worker/login');
-
+    
+      navigate('/worker/login');
+      console.log('Signup successful!', response.data);
     } catch (error) {
-      console.error('Error during SignUp:', error.response ? error.response.data : error.message);
-      // 여기에서 오류 처리를 수행
+      let code = error.response.status;
+      if (code === 409) { // 아이디 중복
+        setErrorMessage("중복된 아이디입니다.");
+      } else if (code === 400) { // 입력 형식 오류
+        setErrorMessage("회원가입 형식이 잘못되었습니다.");
+      } else { // 서버 오류
+        setErrorMessage("서버 오류로 회원가입에 실패하였습니다.");
+      }
+      console.error('Error during Signup:', error.response ? error.response.data : error.message);
     }
   };
 
   return (
     <div className="Signup-container">
-      <form className="Signup-form">
+      <form className="Signup-form" onSubmit={handleSubmit}>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <br />
         <label>
           <div className="Signup-namebox">아이디</div>
           <input
@@ -56,6 +69,15 @@ const Signup = () => {
         </label>
 
         <label>
+          <div className="Signup-namebox">이름</div>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+
+        <label>
           <div className="Signup-namebox">이메일</div>
           <input
             type="email"
@@ -65,12 +87,12 @@ const Signup = () => {
         </label>
 
         <label>
-          <div className="Signup-namebox">이름</div>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <div className="Signup-namebox">핸드폰 번호</div>
+            <input
+              type="text"
+              value={phone_number}
+              onChange={(e) => setPhone(e.target.value)}
+            />
         </label>
 
         <br />
@@ -79,13 +101,17 @@ const Signup = () => {
 
         <button
           className="Signup-submit"
-          type="submit"
-          onClick={handleSubmit}>
+          type="submit">
           회원가입
         </button>
+        <button
+          className="Signup-returnbutton"
+          type="button"
+          onClick={handleReturn}>
+          로그인 화면으로 돌아가기
+          </button>
       </form>
     </div>
-
   );
 };
 
