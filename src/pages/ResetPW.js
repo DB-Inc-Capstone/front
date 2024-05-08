@@ -2,10 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import './FindPW.css'
+import './ResetPW.css'
 const port = 9001;
 
-const FindPW = () => {
+const ResetPW = () => {
     const [id, setID] = useState('');
     const [phone_number, setPhone] = useState('');
     const [pswd, setPW] = useState('');
@@ -57,20 +57,21 @@ const FindPW = () => {
             });
 
             setErrorMessage(response.data.message);
-            console.log('FindPW successful!', response.data);
+            console.log('ResetPW successful!', response.data);
             navigate('/worker/login');
         } catch (error) {
             setErrorMessage(error.response.data.message);
-            console.error('Error during FindPW:', error.response ? error.response.data : error.message);
+            setExist(false);
+            console.error('Error during ResetPW:', error.response ? error.response.data : error.message);
         }
     }
     return (
-        <div className="FindPW-container">
-            <form className="FindPW-form">
+        <div className="ResetPW-container">
+            <form className="ResetPW-form">
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             <br />
                 <label>
-                    <div className="FindPW-namebox">아이디</div>
+                    <div className="ResetPW-namebox">아이디</div>
                     <input
                         type="text"
                         value={id}
@@ -79,21 +80,21 @@ const FindPW = () => {
                 </label>
 
                 <label>
-                    <div className="FindPW-namebox">핸드폰 번호</div>
+                    <div className="ResetPW-namebox">핸드폰 번호</div>
                     <input
                         type="text"
                         value={phone_number}
                         onChange={(e) => setPhone(e.target.value)}
                     />
                     <button 
-                        className="FindPW-button"
+                        className="ResetPW-button"
                         type="submit"
                         onClick={checkID}>
                         인증
                     </button>
                 </label>
                 <label>
-                    <div className="FindPW-namebox">비밀번호</div>
+                    <div className="ResetPW-namebox">비밀번호</div>
                     <input
                         type="text"
                         value={pswd}
@@ -102,21 +103,21 @@ const FindPW = () => {
                 </label>
 
                 <label>
-                    <div className="FindPW-namebox">비밀번호 확인</div>
+                    <div className="ResetPW-namebox">비밀번호 확인</div>
                     <input
                         type="password"
                         value={check_pswd}
                         onChange={(e) => checkPW(e.target.value)}
                     />
                     <button 
-                        className="FindPW-button"
+                        className="ResetPW-button"
                         type="submit"
                         onClick={SubmitPW}>
                         변경
                     </button>
                 </label>
                 <button
-                    className="FindPW-returnbutton"
+                    className="ResetPW-returnbutton"
                     type="button"
                     onClick={handleReturn}>
                     로그인 화면으로 돌아가기
@@ -126,4 +127,4 @@ const FindPW = () => {
     );
 };
 
-export default FindPW;
+export default ResetPW;
