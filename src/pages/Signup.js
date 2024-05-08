@@ -30,17 +30,10 @@ const Signup = () => {
         email: email
       });
     
-      navigate('/worker/login');
       console.log('Signup successful!', response.data);
+      navigate('/worker/login');
     } catch (error) {
-      let code = error.response.status;
-      if (code === 409) { // 아이디 중복
-        setErrorMessage("중복된 아이디입니다.");
-      } else if (code === 400) { // 입력 형식 오류
-        setErrorMessage("회원가입 형식이 잘못되었습니다.");
-      } else { // 서버 오류
-        setErrorMessage("서버 오류로 회원가입에 실패하였습니다.");
-      }
+      setErrorMessage(error.response.data.message);
       console.error('Error during Signup:', error.response ? error.response.data : error.message);
     }
   };

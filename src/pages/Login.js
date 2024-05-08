@@ -27,16 +27,10 @@ const Login = () => {
                 username: id,
                 password: password
             });
-
-            setErrorMessage("로그인 성공");
+            setErrorMessage(response.data.message);
             console.log('Login successful!', response.data);
         } catch (error) {
-            let code = error.response.status;
-            if (code === 400) { // 로그인 실패
-                setErrorMessage("아이디나 비밀번호가 올바르지 않습니다.");
-            } else { // 서버 오류
-                setErrorMessage("서버 오류로 로그인에 실패하였습니다.");
-            }
+            setErrorMessage(error.response.data.message);
             console.error('Error during Login:', error.response ? error.response.data : error.message);
         }
     };

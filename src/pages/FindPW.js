@@ -10,7 +10,8 @@ const FindPW = () => {
     const [phone_number, setPhone] = useState('');
     const [pswd, setPW] = useState('');
     const [check_pswd, checkPW] = useState('');
-    const [exist, checkExist] = useState(false);
+    const [exist, setExist] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleReturn = async (e) => {
@@ -21,39 +22,53 @@ const FindPW = () => {
         e.preventDefault();
 
         try { // /worker/checkid 로 변경
-            const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/login', {
-                id,
-                phone_number
+            const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/valid', {
+                username: id,
+                phoneNumber: phone_number
             });
-
-            console.log('FindPW successful!', response.data);
-            // 여기에서 인증 번호 전송 동작을 수행
+            setErrorMessage(response.data.message);
+            setExist(true);
+            console.log('checkID successful!', response.data);
         } catch (error) {
-            console.error('Error during FindPW:', error.response ? error.response.data : error.message);
-            // 여기에서 오류 처리를 수행
+            setErrorMessage(error.response.data.message);
+            setExist(false);
+            console.error('Error during checkID:', error.response ? error.response.data : error.message);
         }
     };
 
     const SubmitPW = async (e) => {
         e.preventDefault();
 
-        try { // /worker/checkpw 로 변경
-            const response = await axios.post('http://localhost:4000/worker/findpw', {
-                id,
-                phone_number
+        if (!exist) {
+            setErrorMessage("계정 인증을 먼저 진행해주십시오.");
+            return;
+        }
+        
+        if (pswd !== check_pswd) {
+            setErrorMessage("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/resetpw', {
+                username: id,
+                phoneNumber: phone_number,
+                password: pswd
             });
 
+            setErrorMessage(response.data.message);
             console.log('FindPW successful!', response.data);
-            // 여기에서 인증 번호 전송 동작을 수행
-            navigate('/worker/modifypw');
+            navigate('/worker/login');
         } catch (error) {
+            setErrorMessage(error.response.data.message);
             console.error('Error during FindPW:', error.response ? error.response.data : error.message);
-            // 여기에서 오류 처리를 수행
         }
     }
     return (
         <div className="FindPW-container">
             <form className="FindPW-form">
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            <br />
                 <label>
                     <div className="FindPW-namebox">아이디</div>
                     <input
@@ -74,7 +89,7 @@ const FindPW = () => {
                         className="FindPW-button"
                         type="submit"
                         onClick={checkID}>
-                        확인
+                        인증
                     </button>
                 </label>
                 <label>
@@ -93,7 +108,7 @@ const FindPW = () => {
                         value={check_pswd}
                         onChange={(e) => checkPW(e.target.value)}
                     />
-                     <button 
+                    <button 
                         className="FindPW-button"
                         type="submit"
                         onClick={SubmitPW}>
