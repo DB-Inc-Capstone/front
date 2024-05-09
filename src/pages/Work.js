@@ -6,12 +6,20 @@ import axios from "axios";
 import MenuBar from "../components/MenuBar";
 import './Work.css'
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
 const Work = () => {
     const navigate = useNavigate();
 
     const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
 
     const [todoList, setTodoList] = useState(null);
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [finishDate, setFinishDate] = useState(new Date());
+
 
     const fetchData = async () => {
         const response = await axios.get('http://localhost:8080/work');
@@ -24,6 +32,7 @@ const Work = () => {
         const workTitle = e.target.workTitle.value;
         const workContent = e.target.workContent.value;
         const workState = e.target.workState.value;
+
         const startDate = e.target.startDate.value;
         const finishDate = e.target.finishDate.value;
     
@@ -101,7 +110,10 @@ const Work = () => {
                         </div>
                         <div className="form-group">
                             <label for = "workState">작업 상태</label>
-                            <input required type="text" name="workState" />
+                            <select required name="workState">
+                                <option value="1">진행 중</option>
+                                <option value="0">완료</option>
+                            </select>
                         </div>
                         <div className="form-group">
                             <label for = "startDate">시작일</label>
@@ -111,6 +123,24 @@ const Work = () => {
                             <label for = "finishDate">완료일</label>
                             <input required type="text" name="finishDate" />
                         </div>
+
+
+                        {/* <div className="form-group">
+                            <label for="startDate">시작일</label>
+                            <DatePicker
+                                selected={startDate} // startDate는 state로 선언되어야 합니다.
+                                onChange={date => setStartDate(date)} // startDate 상태를 업데이트합니다.
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label for="finishDate">완료일</label>
+                            <DatePicker
+                                selected={finishDate} // finishDate는 state로 선언되어야 합니다.
+                                onChange={date => setFinishDate(date)} // finishDate 상태를 업데이트합니다.
+                            />
+                        </div> */}
+
+
                         <div className="form-group">
                             <label for = "workContent">작업 내용</label>
                             <textarea required="" cols="50" rows="10" id="workContent" name="workContent">          </textarea>
