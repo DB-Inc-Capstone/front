@@ -10,7 +10,7 @@
     height: 100%;
     width: 150px;
     border-right: black 1px solid; /* Added: Set right border color to black */
-    background-color: rgb(229, 229, 229);
+    background-color: none;
 }
 
 .menu-bar button {
@@ -22,12 +22,21 @@
     border-radius: 0; /* Added: Remove border radius */
     margin-top: 0; /* Added: Remove top margin */
     margin-bottom: 0; /* Added: Remove bottom margin */
+    cursor: pointer;
     background-color:  rgb(229, 229, 229); /* Added: Set button background color to lightgray */
 }
 
 .menu-bar button:last-child {
     margin-top: auto;
     border-top: 1px solid black; /* Added: Set top border color to black */
+}
+
+.menu-bar button:hover {
+    background-color: #777; /* 추가: 호버 시 색상 변경 */
+}
+
+.menu-bar button.active {
+    background-color: gray; /* 변경: 더 진한 회색 */
 }
 
 .search-bar {

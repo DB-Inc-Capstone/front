@@ -9,42 +9,35 @@ import './Work.css'
 const Work = () => {
     const navigate = useNavigate();
 
+    const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
+
     const [todoList, setTodoList] = useState(null);
 
     const fetchData = async () => {
-        const response = await axios.get('http://localhost:8080/work/:workID');
+        const response = await axios.get('http://localhost:8080/work');
         setTodoList(response.data);
-
-
-        // fetch('http://localhost:8080/work/todo')
-        // .then((response) => response.json())
-        // .then((data) => setTodoList(data));
     };
 
     const onSubmitHandler = async (e) => {
+        e.preventDefault(); // 폼 기본 제출 동작 방지
+    
         const workTitle = e.target.workTitle.value;
         const workContent = e.target.workContent.value;
         const workState = e.target.workState.value;
         const startDate = e.target.startDate.value;
         const finishDate = e.target.finishDate.value;
-
+    
         await axios.post('http://localhost:8080/work/create', { workTitle, workContent, workState, startDate, finishDate });
-        fetchData();
+        setShowAddTodo(false); // 작업 추가창을 닫습니다.
+        fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
+    };
 
+    const handleAddTodoClick = () => {
+        setShowAddTodo(true); // 모달 열기
+    };
 
-        // fetch('http://localhost:8080/work/todo', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         workTitle,
-        //         workContent,
-        //         workState,
-        //         startDate,
-        //         finishDate,
-        //     }),
-        // }).then(() => fetchData());
+    const handleCloseModal = () => {
+        setShowAddTodo(false); // 모달 닫기
     };
 
     useEffect(() => {
@@ -57,44 +50,78 @@ const Work = () => {
     return (
         <div className="container">
             <MenuBar />
-            <div className="add-todo">
-                <h1>작업 추가</h1>
-                <form onSubmit={onSubmitHandler}>
-                    <label>
-                        작업 제목
-                        <input type="text" name="workTitle" />
-                    </label>
-                    <label>
-                        작업 내용
-                        <input type="text" name="workContent" />
-                    </label>
-                    <label>
-                        작업 상태
-                        <input type="text" name="workState" />
-                    </label>
-                    <label>
-                        시작일
-                        <input type="text" name="startDate" />
-                    </label>
-                    <label>
-                        완료일
-                        <input type="text" name="finishDate" />
-                    </label>
-                    <button type="submit">작업 추가</button>
-                </form>
+            <div className="add-button">
+                <button onClick={handleAddTodoClick}>📖 할일 +</button>
+            </div>
+            <div className="add-button2">
+                <button>진행 중</button>
+            </div>
+            <div className="add-button3">
+                <button>완료</button>
             </div>
             <div className="todo-list">
-                <h1>작업리스트</h1>
-                {todoList?.map((todo) => (
-                    <div key={todo.workID}>
-                        <p>{todo.workTitle}</p>
-                        <p>{todo.workContent}</p>
-                        <p>{todo.workState}</p>
-                        <p>{todo.startDate}</p>
-                        <p>{todo.finishDate}</p>
-                    </div>
+                <div className="form">
+                    {todoList?.slice(0, 4).map((todo) => (
+                        <div key={todo.workID} className="todo-item">
+                            <label>{todo.workTitle}</label>
+                            <p>{todo.workContent}</p>
+                            {/* <p>{todo.workState}</p>
+                            <p>{todo.startDate}</p>
+                            <p>{todo.finishDate}</p> */}
+                        </div>
                 ))}
+                </div>
             </div>
+            <div className="todo-list-1">
+                <div className="form">
+                    {todoList?.filter(todo => todo.workState === "1").slice(0, 4).map((todo) => (
+                        <div key={todo.workID} className="todo-item">
+                            <label>{todo.workTitle}</label>
+                            <p>{todo.workContent}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="todo-list-2">
+                <div className="form">
+                    {todoList?.filter(todo => todo.workState === "0").slice(0, 4).map((todo) => (
+                        <div key={todo.workID} className="todo-item">
+                            <label>{todo.workTitle}</label>
+                            <p>{todo.workContent}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {showAddTodo && (
+                <div className="add-todo">
+                    <form onSubmit={onSubmitHandler}>
+                        <div className="form-group">
+                            <label for = "workTitle">작업 제목</label>
+                            <input required type="text" name="workTitle" />
+                        </div>
+                        <div className="form-group">
+                            <label for = "workState">작업 상태</label>
+                            <input required type="text" name="workState" />
+                        </div>
+                        <div className="form-group">
+                            <label for = "startDate">시작일</label>
+                            <input required type="text" name="startDate" />
+                        </div>
+                        <div className="form-group">
+                            <label for = "finishDate">완료일</label>
+                            <input required type="text" name="finishDate" />
+                        </div>
+                        <div className="form-group">
+                            <label for = "workContent">작업 내용</label>
+                            <textarea required="" cols="50" rows="10" id="workContent" name="workContent">          </textarea>
+                        </div>
+
+                        <button type="submit" className="form-submit-button">작업 추가</button>
+                        {/* 팝업 닫기 버튼 */}
+                    <button type="button" className="form-submit-button" onClick={() => setShowAddTodo(false)}>창 닫기</button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };
