@@ -5,6 +5,7 @@ import Singup from "./pages/Signup";
 
 import Work from "./pages/Work";
 import Worklist from "./pages/Worklist";
+import Issue from "./pages/Issue";
 
 import FindPW from "./pages/FindPW";
 import ModifyPW from "./pages/ModifyPW";
@@ -25,6 +26,7 @@ function App() {
 
         <Route path="/work" element={<Work />} />
         <Route path="/work/worklist" element={<Worklist />} />
+        <Route path="/work/issue" element={<Issue />} />
 
       </Routes>
     </BrowserRouter>

@@ -1,0 +1,82 @@
+.container {
+    display: flex;
+    height: 100vh; /* Updated: Set container height to 100% of viewport height */
+}
+
+
+.worklist {
+    position: absolute;
+    top: 55%;
+    left: 54.5%;
+    transform: translate(-50%, -50%); /* div요소의 50%만큼 이동 */
+    width: 88%;
+    height: 85%;
+    background: white;
+    box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 0px 105px 63px rgba(0, 0, 0, 0.05), 0px 47px 47px rgba(0, 0, 0, 0.09), 0px 12px 26px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.worklist table {
+    width: 100%; /* 테이블이 부모 요소에 꽉 차게 설정 */
+    border-collapse: collapse; /* 테이블 셀 사이의 경계를 병합 */
+}
+
+
+/* 테이블의 헤더 부분에 스타일 적용 */
+.worklist th {
+    border: 1px solid #ccc; /* 테이블 셀 경계 설정 */
+    background-color: #f5f5f5; /* 헤더 배경색 변경 */
+    height: 41px; /* 행의 높이 조절 */
+    font-weight: bold; /* 헤더 텍스트 굵게 표시 */
+    text-align: center; /* 헤더 텍스트 가운데 정렬 */
+    padding: 10px; /* 헤더 셀 안의 여백 설정 */
+    border-bottom: 2px solid #ddd; /* 아래쪽 테두리 추가 */
+}
+
+/* 테이블의 내용 부분에 스타일 적용 */
+.worklist td {
+    border: 1px solid #ccc; /* 테이블 셀 경계 설정 */
+    padding: 10px; /* 셀 내부 여백 설정 */
+    text-align: center; /* 셀 안의 텍스트 가운데 정렬 */
+    height: 39px; /* 행의 높이 조절 */
+    white-space: nowrap; /* 너비를 초과하는 텍스트 줄바꿈 방지 */
+    overflow: hidden; /* 요소 내부의 넘치는 내용을 숨김 */
+    text-overflow: ellipsis; /* 말 줄임표(...)로 텍스트 잘림을 표시 */
+    max-width: 200px; /* 셀의 최대 너비 지정 */
+}
+
+.work {
+    width: 20%; /* Work 셀의 너비 */
+}
+
+.summary {
+    width: 50%; /* Summary 셀의 너비 */
+}
+
+.status {
+    width: 15%; /* Status 셀의 너비 */
+}
+
+.start-date {
+    width: 15%; /* Start Date 셀의 너비 */
+}
+  
+
+table tr:hover {
+    background-color: #f5f5f5; /* 셀 색상 변경 */
+  }
+  
+  table td:hover {
+    cursor: pointer; /* 마우스 모양 변경 */
+  }
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 50%;
+    background: white;
+    box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 0px 105px 63px rgba(0, 0, 0, 0.05), 0px 47px 47px rgba(0, 0, 0, 0.09), 0px 12px 26px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 26px;
+}
