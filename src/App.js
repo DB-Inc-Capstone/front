@@ -6,11 +6,11 @@ import Singup from "./pages/Signup";
 import Work from "./pages/Work";
 import Worklist from "./pages/Worklist";
 import Issue from "./pages/Issue";
+import Timeline from "./pages/Timeline";
 
 import FindPW from "./pages/FindPW";
 import ModifyPW from "./pages/ModifyPW";
 
-import MenuBar from "./components/MenuBar";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
         <Route path="/work" element={<Work />} />
         <Route path="/work/worklist" element={<Worklist />} />
         <Route path="/work/issue" element={<Issue />} />
+        <Route path="/work/timeline" element={<Timeline />} />
 
       </Routes>
     </BrowserRouter>

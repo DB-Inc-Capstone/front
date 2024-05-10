@@ -5,7 +5,7 @@ import axios from "axios";
 
 import MenuBar from "../components/MenuBar";
 
-function Issue() {
+function Timeline() {
     return (
       <div className="container">
             <MenuBar />
@@ -13,4 +13,4 @@ function Issue() {
     );
   }
   
-  export default Issue;
+  export default Timeline;
