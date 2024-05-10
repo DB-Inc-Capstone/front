@@ -1,12 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import './MenuBar.css';
 
 const MenuBar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [activeButton, setActiveButton] = useState("taskBoard");
     const [selectedText, setSelectedText] = useState("작업보드");
+
+    useEffect(() => {
+        switch (location.pathname) {
+            case "/work":
+                setActiveButton("taskBoard");
+                setSelectedText("작업보드");
+                break;
+            case "/work/worklist":
+                setActiveButton("taskList");
+                setSelectedText("작업리스트");
+                break;
+            case "/work/issue":
+                setActiveButton("issues");
+                setSelectedText("이슈");
+                break;
+            case "/work/timeline":
+                setActiveButton("timeline");
+                setSelectedText("타임라인");
+                break;
+            // 다른 페이지에 대한 설정 추가
+            default:
+                setActiveButton("main");
+                setSelectedText("홈");
+        }
+    }, [location.pathname]);
 
     const handleTaskBoardClick = () => {
         setActiveButton("taskBoard");
@@ -24,6 +50,7 @@ const MenuBar = () => {
         // 타임라인 버튼이 클릭되었을 때 실행될 코드
         setActiveButton("timeline");
         setSelectedText("타임라인");
+        navigate("/work/timeline");
     };
     
     const handleIssuesClick = () => {
@@ -42,11 +69,6 @@ const MenuBar = () => {
         // 메인 버튼이 클릭되었을 때 실행될 코드
         setActiveButton("main");
     };
-
-    useEffect(() => {
-        setActiveButton("taskBoard");
-        setSelectedText("작업보드");
-    }, []);
 
     return (
         <div>
