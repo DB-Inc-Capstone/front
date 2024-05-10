@@ -69,7 +69,7 @@ const Worklist = () => {
               <tr key={todo.workID} onClick={() => handleWorkClick(todo)}>
                 <td>{todo.workTitle}</td>
                 <td>{todo.workContent}</td>
-                <td>{todo.workState}</td>
+                <td>{todo.workState === "1" ? "진행중" : "완료"}</td>
                 <td>{todo.startDate}</td>
               </tr>
             ))}
@@ -89,7 +89,10 @@ const Worklist = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="workState">작업 상태</label>
-                        <input type="text" id="workState" name="workState" value={editWork.workState || ""} onChange={(e) => setEditWork({ ...editWork, workState: e.target.value })} />
+                        <select id="workState" name="workState" value={editWork.workState || ""} onChange={(e) => setEditWork({ ...editWork, workState: e.target.value })}>
+                            <option value="1">진행 중</option>
+                            <option value="0">완료</option>
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="startDate">시작일</label>
