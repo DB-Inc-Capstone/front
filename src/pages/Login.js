@@ -12,7 +12,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleFindPW = async (e) => {
-        navigate("/worker/findpw");
+        navigate("/worker/resetpw");
     };
 
     const handleSignup = async (e) => {
