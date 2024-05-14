@@ -1,5 +1,7 @@
- import React from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -8,7 +10,6 @@ import './Work.css'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 
 const Work = () => {
     const navigate = useNavigate();
@@ -20,6 +21,8 @@ const Work = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
 
+    const location = useLocation();
+    const { id } = location.state || {}; // 내가 login한 사원번호
 
     const fetchData = async () => {
         const response = await axios.get('http://localhost:8080/work');
