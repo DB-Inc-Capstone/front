@@ -1,6 +1,6 @@
-/* ModifyPWPage.css */
+/* ResetPWPage.css */
 
-.ModifyPW-container {
+.ResetPW-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,27 +8,46 @@
     background-color: lightgray;
 }
 
-.ModifyPW-form {
-    width: 700px;
+.ResetPW-form {
+    width: center;
     padding: 20px;
     border-radius: 15px;
     margin: auto;
     text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* 수정: 수직 정렬을 왼쪽으로 변경 */
 }
 
-.ModifyPW-namebox {
-    width: 110px;
+.ResetPW-namebox {
+    width: 300px;
     text-align: left;
     margin-bottom: 5px;
+    align-self: flex-start; /* 수정: 왼쪽 정렬 */
 }
 
-.ModifyPW-button {
+.ResetPW-idbox {
+    width: 300px;
+    text-align: left;
+    margin-bottom: 5px;
+    align-self: flex-start; /* 수정: 왼쪽 정렬 */
+}
+
+.ResetPW-button {
     width: 70px;
     padding: 10px;
     margin-left: 20px;
+    background-color: darkgray;
+    color: black;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.ResetPW-returnbutton {
+    width: 300px;
+    padding: 10px;
+    margin-top: 50px;
     background-color: darkgray;
     color: black;
     border: none;
