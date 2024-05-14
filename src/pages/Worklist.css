@@ -20,7 +20,6 @@
     border-collapse: collapse; /* 테이블 셀 사이의 경계를 병합 */
 }
 
-
 /* 테이블의 헤더 부분에 스타일 적용 */
 .worklist th {
     border: 1px solid #ccc; /* 테이블 셀 경계 설정 */

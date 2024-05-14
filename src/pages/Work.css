@@ -195,6 +195,8 @@
 .add-todo .form-group textarea {
     width: 100%;
     padding: 12px 0px;
+    text-align: center; /* 수평 가운데 정렬 */
+    vertical-align: middle; /* 수직 가운데 정렬 */
     border-radius: 8px;
     resize: none;
     color: black;
