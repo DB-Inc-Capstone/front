@@ -143,7 +143,7 @@ const Work = () => {
 
                         <div className="form-group">
                             <label for = "workContent">작업 내용</label>
-                            <textarea required="" cols="50" rows="10" id="workContent" name="workContent">          </textarea>
+                            <textarea required="" cols="50" rows="10" id="workContent" name="workContent"></textarea>
                         </div>
 
                         <button type="submit" className="form-submit-button">작업 추가</button>
