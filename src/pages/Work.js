@@ -7,16 +7,17 @@ import axios from "axios";
 
 import MenuBar from "../components/MenuBar";
 import './Work.css'
+const port = 9002;
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+//import DatePicker from "react-datepicker";
+//import "react-datepicker/dist/react-datepicker.css";
 
 const Work = () => {
     const navigate = useNavigate();
 
     const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
 
-    const [todoList, setTodoList] = useState(null);
+    const [todoList, setTodoList] = useState([]);
 
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
@@ -25,8 +26,15 @@ const Work = () => {
     const { id } = location.state || {}; // 내가 login한 사원번호
 
     const fetchData = async () => {
-        const response = await axios.get('http://localhost:8080/work');
-        setTodoList(response.data);
+        const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
+        /*
+        if (Array.isArray(response.data)) {
+            setTodoList(response.data);
+        } else {
+            console.error("Unexpected response data:", response.data);
+            setTodoList([]); // 응답이 배열이 아닌 경우 빈 배열로 설정
+        }*/
+        setTodoList(response.data.workinfos);
     };
 
     const onSubmitHandler = async (e) => {
@@ -35,11 +43,10 @@ const Work = () => {
         const workTitle = e.target.workTitle.value;
         const workContent = e.target.workContent.value;
         const workState = e.target.workState.value;
-
         const startDate = e.target.startDate.value;
         const finishDate = e.target.finishDate.value;
     
-        await axios.post('http://localhost:8080/work/create', { workTitle, workContent, workState, startDate, finishDate });
+        await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work', { workTitle, workContent, workState, startDate, finishDate });
         setShowAddTodo(false); // 작업 추가창을 닫습니다.
         fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
     };
@@ -56,9 +63,6 @@ const Work = () => {
         fetchData();
     }, []);
 
-
-
-
     return (
         <div className="container">
             <MenuBar />
@@ -73,7 +77,7 @@ const Work = () => {
             </div>
             <div className="todo-list">
                 <div className="form">
-                    {todoList?.slice(0, 4).map((todo) => (
+                    {todoList?.filter(todo => todo.workState === 0).slice(0, 4).map((todo) => (
                         <div key={todo.workID} className="todo-item">
                             <label>{todo.workTitle}</label>
                             <p>{todo.workContent}</p>
@@ -86,7 +90,7 @@ const Work = () => {
             </div>
             <div className="todo-list-1">
                 <div className="form">
-                    {todoList?.filter(todo => todo.workState === "1").slice(0, 4).map((todo) => (
+                    {todoList?.filter(todo => todo.workState === 1).slice(0, 4).map((todo) => (
                         <div key={todo.workID} className="todo-item">
                             <label>{todo.workTitle}</label>
                             <p>{todo.workContent}</p>
@@ -96,7 +100,7 @@ const Work = () => {
             </div>
             <div className="todo-list-2">
                 <div className="form">
-                    {todoList?.filter(todo => todo.workState === "0").slice(0, 4).map((todo) => (
+                    {todoList?.filter(todo => todo.workState === 2).slice(0, 4).map((todo) => (
                         <div key={todo.workID} className="todo-item">
                             <label>{todo.workTitle}</label>
                             <p>{todo.workContent}</p>
@@ -114,8 +118,9 @@ const Work = () => {
                         <div className="form-group">
                             <label for = "workState">작업 상태</label>
                             <select required name="workState">
+                                <option value="0">할 일</option>
                                 <option value="1">진행 중</option>
-                                <option value="0">완료</option>
+                                <option value="2">완료</option>
                             </select>
                         </div>
                         <div className="form-group">
