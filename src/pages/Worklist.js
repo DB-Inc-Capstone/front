@@ -8,7 +8,7 @@ import "./Worklist.css";
 const Worklist = () => {
   const navigate = useNavigate();
 
-  const [todoList, setTodoList] = useState(null);
+  const [todoList, setTodoList] = useState([]);
   const [selectedWork, setSelectedWork] = useState(null); // 선택된 작업 상태
   const [editWork, setEditWork] = useState({}); // 수정할 작업 정보 상태
 
@@ -40,7 +40,7 @@ const Worklist = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:8080/work");
-      setTodoList(response.data);
+      setTodoList(response.data.workinfos);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
