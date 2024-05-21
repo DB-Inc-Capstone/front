@@ -29,7 +29,6 @@ const Login = () => {
             });
             setErrorMessage(response.data.message);
             console.log('Login successful!', response.data);
-
             navigate("/work", { state: { id: id } });
         } catch (error) {
             setErrorMessage(error.response.data.message);

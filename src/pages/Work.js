@@ -67,7 +67,7 @@ const Work = () => {
         <div className="container">
             <MenuBar />
             <div className="add-button">
-                <button onClick={handleAddTodoClick}>📖 할일 +</button>
+                <button onClick={handleAddTodoClick}>📖 할 일 +</button>
             </div>
             <div className="add-button2">
                 <button>진행 중</button>
