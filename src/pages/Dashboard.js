@@ -45,7 +45,7 @@ function Dashboard() {
     };
 
     const have_cont_issueData = {
-      labels: ['Have Work', 'Continuing Work'],
+      labels: ['Have Issue', 'Continuing Issue'],
         datasets: [{
             data: [haveToDoIssue, continuingIssue],
             backgroundColor: ['#36A2EB', '#FF6384'],
