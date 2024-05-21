@@ -4,6 +4,7 @@ import axios from "axios";
 
 import MenuBar from "../components/MenuBar";
 import "./Worklist.css";
+const port = 9002;
 
 const Worklist = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Worklist = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`http://localhost:8080/work/${selectedWork.workID}`, editWork);
+      await axios.put(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`, editWork);
 
       // 수정된 내용을 선택된 작업에 반영
       setSelectedWork({ ...selectedWork, ...editWork });
@@ -38,13 +39,16 @@ const Worklist = () => {
   };
 
   const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/work");
-      setTodoList(response.data.workinfos);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+    const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
+    /*
+    if (Array.isArray(response.data)) {
+        setTodoList(response.data);
+    } else {
+        console.error("Unexpected response data:", response.data);
+        setTodoList([]); // 응답이 배열이 아닌 경우 빈 배열로 설정
+    }*/
+    setTodoList(response.data.workinfos);
+};
 
   useEffect(() => {
     fetchData();
@@ -69,7 +73,7 @@ const Worklist = () => {
               <tr key={todo.workID} onClick={() => handleWorkClick(todo)}>
                 <td>{todo.workTitle}</td>
                 <td>{todo.workContent}</td>
-                <td>{todo.workState === "1" ? "진행중" : "완료"}</td>
+                <td>{todo.workState === 0 ? "할 일" : (todo.workState === 1 ? "진행 중" : "완료")}</td>
                 <td>{todo.startDate}</td>
               </tr>
             ))}
@@ -90,8 +94,9 @@ const Worklist = () => {
                     <div className="form-group">
                         <label htmlFor="workState">작업 상태</label>
                         <select id="workState" name="workState" value={editWork.workState || ""} onChange={(e) => setEditWork({ ...editWork, workState: e.target.value })}>
+                            <option value="0">할 일</option>
                             <option value="1">진행 중</option>
-                            <option value="0">완료</option>
+                            <option value="2">완료</option>
                         </select>
                     </div>
                     <div className="form-group">

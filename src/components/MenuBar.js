@@ -63,6 +63,7 @@ const MenuBar = () => {
     const handleLogout = () => {
         // 로그아웃 버튼이 클릭되었을 때 실행될 코드
         setActiveButton("logout");
+        navigate("/worker/login");
     };
 
     const handleMainClick = () => {

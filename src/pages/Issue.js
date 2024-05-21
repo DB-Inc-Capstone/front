@@ -93,7 +93,7 @@ const handleCloseModal = () => {
                 <td>{todo.issueTitle}</td>
                 <td>{todo.workTitle}</td>
                 <td>{todo.issueContent}</td>
-                <td>{todo.issueState === "1" ? "진행중" : "완료"}</td>
+                <td>{todo.workState === 0 ? "할 일" : (todo.workState === 1 ? "진행 중" : "완료")}</td>
               </tr>
             ))}
           </tbody>
@@ -120,8 +120,9 @@ const handleCloseModal = () => {
                   <div className="form-group">
                       <label for = "issueState">이슈 상태</label>
                       <select required name="issueState">
+                          <option value="0">할 일</option>
                           <option value="1">진행 중</option>
-                          <option value="0">완료</option>
+                          <option value="2">완료</option>
                       </select>
                   </div>
                   <div className="form-group">
@@ -153,8 +154,9 @@ const handleCloseModal = () => {
                     <div className="form-group">
                         <label htmlFor="issueState">이슈 상태</label>
                         <select id="issueState" name="issueState" value={editIssue.issueState || ""} onChange={(e) => setEditIssue({ ...editIssue, issueState: e.target.value })}>
-                            <option value="1">진행 중</option>
-                            <option value="0">완료</option>
+                          <option value="0">할 일</option>
+                          <option value="1">진행 중</option>
+                          <option value="2">완료</option>
                         </select>
                     </div>
                     <div className="form-group">
