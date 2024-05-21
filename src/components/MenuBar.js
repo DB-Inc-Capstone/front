@@ -27,6 +27,10 @@ const MenuBar = () => {
                 setActiveButton("timeline");
                 setSelectedText("타임라인");
                 break;
+            case "/work/dashboard":
+                setActiveButton("dashboard");
+                setSelectedText("대시보드");
+                break;
             // 다른 페이지에 대한 설정 추가
             default:
                 setActiveButton("main");
@@ -59,6 +63,13 @@ const MenuBar = () => {
         setSelectedText("이슈");
         navigate("/work/issue");
     };
+
+    const handleDashboardClick = () => {
+        // 대시보드 버튼이 클릭되었을 때 실행될 코드
+        setActiveButton("dashboard");
+        setSelectedText("대시보드");
+        navigate("/work/dashboard");
+    };
     
     const handleLogout = () => {
         // 로그아웃 버튼이 클릭되었을 때 실행될 코드
@@ -78,6 +89,7 @@ const MenuBar = () => {
                 <button className={activeButton === "taskList" ? "active" : ""} onClick={handleTaskListClick}>작업리스트</button>
                 <button className={activeButton === "timeline" ? "active" : ""} onClick={handleTimelineClick}>타임라인</button>
                 <button className={activeButton === "issues" ? "active" : ""} onClick={handleIssuesClick}>이슈</button>
+                <button className={activeButton === "dashboard" ? "active" : ""} onClick={handleDashboardClick}>대시보드</button>
                 <button className={activeButton === "logout" ? "active" : ""} onClick={handleLogout}>로그아웃</button>
             </div>
             <div className="search-bar">
