@@ -1,17 +1,21 @@
 .container {
     display: flex;
+    flex-direction: column;
     height: 100vh; /* Updated: Set container height to 100% of viewport height */
 }
 
+.dashboard-container {
+    flex-direction: row;
+    margin-top: 100px;
+    margin-left: 350px;
+    display: flex;
+}
+
 .chart-container {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 17%; /* 또는 다른 원하는 너비 */
-    height: 20%; /* 또는 다른 원하는 높이 */
-    box-sizing: border-box;
+    flex-direction: row;
+    width: 300px; /* 또는 다른 원하는 너비 */
+    height: 100%; /* 또는 다른 원하는 높이 */
     text-align: center;
-    margin-top: 150px;
-    margin-left: 400px;
+    margin-left: 150px;
 }
 
