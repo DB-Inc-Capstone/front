@@ -7,7 +7,7 @@ import Work from "./pages/Work";
 import Worklist from "./pages/Worklist";
 import Issue from "./pages/Issue";
 import Timeline from "./pages/Timeline";
-
+import Dashboard from "./pages/Dashboard"
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
         <Route path="/work/worklist" element={<Worklist />} />
         <Route path="/work/issue" element={<Issue />} />
         <Route path="/work/timeline" element={<Timeline />} />
+        <Route path="/work/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
