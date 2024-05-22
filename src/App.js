@@ -8,24 +8,26 @@ import Worklist from "./pages/Worklist";
 import Issue from "./pages/Issue";
 import Timeline from "./pages/Timeline";
 import Dashboard from "./pages/Dashboard"
+import { WorkerProvider } from './pages/WorkerContext';
 
 function App() {
   return (
-    <BrowserRouter>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/worker/login" element={<Login />} />
-        <Route path="/worker/signup" element={<Singup />} />
-        <Route path="/worker/resetpw" element={<ResetPW />} />
-          
-        <Route path="/work" element={<Work />} />
-        <Route path="/work/worklist" element={<Worklist />} />
-        <Route path="/work/issue" element={<Issue />} />
-        <Route path="/work/timeline" element={<Timeline />} />
-        <Route path="/work/dashboard" element={<Dashboard />} />
-      </Routes>
-    </BrowserRouter>
+    <WorkerProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/worker/login" element={<Login />} />
+          <Route path="/worker/signup" element={<Singup />} />
+          <Route path="/worker/resetpw" element={<ResetPW />} />
+            
+          <Route path="/work" element={<Work />} />
+          <Route path="/work/worklist" element={<Worklist />} />
+          <Route path="/work/issue" element={<Issue />} />
+          <Route path="/work/timeline" element={<Timeline />} />
+          <Route path="/work/dashboard" element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
+    </WorkerProvider>
   );
 }
 

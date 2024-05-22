@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -7,6 +7,8 @@ import axios from "axios";
 
 import MenuBar from "../components/MenuBar";
 import './Work.css'
+
+import { WorkerContext } from './WorkerContext';
 const port = 9002;
 
 //import DatePicker from "react-datepicker";
@@ -14,17 +16,13 @@ const port = 9002;
 
 const Work = () => {
     const navigate = useNavigate();
-
     const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
-
     const [todoList, setTodoList] = useState([]);
-
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
+    const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
 
-    const location = useLocation();
-    const { id } = location.state || {}; // 내가 login한 사원번호
-
+    console.log(workerID);
     const fetchData = async () => {
         const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
         /*
