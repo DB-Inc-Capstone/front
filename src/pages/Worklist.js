@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import MenuBar from "../components/MenuBar";
 import "./Worklist.css";
+
+import { WorkerContext } from './WorkerContext';
+
 const port = 9002;
 
 const Worklist = () => {
@@ -12,6 +15,7 @@ const Worklist = () => {
   const [todoList, setTodoList] = useState([]);
   const [selectedWork, setSelectedWork] = useState(null); // 선택된 작업 상태
   const [editWork, setEditWork] = useState({}); // 수정할 작업 정보 상태
+  const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
 
   // 작업 내용 클릭 시 팝업 표시 및 선택된 작업 업데이트
   const handleWorkClick = (work) => {

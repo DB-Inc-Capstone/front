@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { WorkerContext } from './WorkerContext';
 import axios from "axios";
 import './Login.css'
 const port = 9001;
@@ -9,6 +10,7 @@ const Login = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const { setWorkerID } = useContext(WorkerContext);
     const navigate = useNavigate();
 
     const handleFindPW = async (e) => {
@@ -29,7 +31,8 @@ const Login = () => {
             });
             setErrorMessage(response.data.message);
             console.log('Login successful!', response.data);
-            navigate("/work", { state: { id: id } });
+            setWorkerID(id);
+            navigate("/work");
         } catch (error) {
             setErrorMessage(error.response.data.message);
             console.error('Error during Login:', error.response ? error.response.data : error.message);
