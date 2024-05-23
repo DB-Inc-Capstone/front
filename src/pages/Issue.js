@@ -24,8 +24,7 @@ const Issue = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`http://localhost:8080/work/issue/${selectedIssue.issueID}`, editIssue);
-
+      await axios.put(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/issue/${selectedIssue.issueID}`, editIssue);
       // 수정된 내용을 선택된 작업에 반영
       setSelectedIssue({ ...selectedIssue, ...editIssue });
       fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
@@ -58,7 +57,7 @@ const Issue = () => {
     const issueContent = e.target.issueContent.value;
     const issueState = e.target.issueState.value;
 
-    await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work/issue', { issueTitle, workID, issueContent, issueState });
+    await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work/issue', { issueTitle, issueContent, issueState, workID });
     setShowAddTodo(false); // 작업 추가창을 닫습니다.
     fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
 };
@@ -150,8 +149,8 @@ const handleCloseModal = () => {
                         <input type="text" id="issueTitle" name="issueTitle" value={editIssue.issueTitle || ""} onChange={(e) => setEditIssue({ ...editIssue, issueTitle: e.target.value })} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="workTitle">관련 작업</label>
-                        <input type="text" id="workTitle" name="workTitle" value={editIssue.workTitle || ""} onChange={(e) => setEditIssue({ ...editIssue, issueTitle: e.target.value })} />
+                        <label htmlFor="workTitle">작업 아이디</label>
+                        <input type="text" id="workTitle" name="worktitle" value={editIssue.workID || ""} onChange={(e) => setEditIssue({ ...editIssue, workID: e.target.value })} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="issueState">이슈 상태</label>
