@@ -1,18 +1,15 @@
-import React, {useContext} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
-import { useState, useEffect } from "react";
 import axios from "axios";
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import MenuBar from "../components/MenuBar";
-import './Work.css'
+import "./Work.css";
+import { WorkerContext } from "./WorkerContext";
 
-import { WorkerContext } from './WorkerContext';
 const port = 9002;
-
-//import DatePicker from "react-datepicker";
-//import "react-datepicker/dist/react-datepicker.css";
 
 const Work = () => {
     const navigate = useNavigate();
@@ -23,27 +20,26 @@ const Work = () => {
     const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
 
     const fetchData = async () => {
-        const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
-        /*
-        if (Array.isArray(response.data)) {
-            setTodoList(response.data);
-        } else {
-            console.error("Unexpected response data:", response.data);
-            setTodoList([]); // 응답이 배열이 아닌 경우 빈 배열로 설정
-        }*/
+        const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:' + port + '/work');
         setTodoList(response.data.workinfos);
     };
 
     const onSubmitHandler = async (e) => {
         e.preventDefault(); // 폼 기본 제출 동작 방지
-    
+
         const workTitle = e.target.workTitle.value;
         const workContent = e.target.workContent.value;
         const workState = e.target.workState.value;
-        const startDate = e.target.startDate.value;
-        const finishDate = e.target.finishDate.value;
-    
-        await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work', { workTitle, workContent, workState, startDate, finishDate });
+        const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
+        const finishDateFormatted = moment(finishDate).format('YYYY-MM-DD');
+
+        await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:' + port + '/work', {
+            workTitle,
+            workContent,
+            workState,
+            startDate: startDateFormatted,
+            finishDate: finishDateFormatted
+        });
         setShowAddTodo(false); // 작업 추가창을 닫습니다.
         fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
     };
@@ -78,11 +74,8 @@ const Work = () => {
                         <div key={todo.workID} className="todo-item">
                             <label>{todo.workTitle}</label>
                             <p>{todo.workContent}</p>
-                            {/* <p>{todo.workState}</p>
-                            <p>{todo.startDate}</p>
-                            <p>{todo.finishDate}</p> */}
                         </div>
-                ))}
+                    ))}
                 </div>
             </div>
             <div className="todo-list-1">
@@ -109,11 +102,11 @@ const Work = () => {
                 <div className="add-todo">
                     <form onSubmit={onSubmitHandler}>
                         <div className="form-group">
-                            <label for = "workTitle">작업 제목</label>
+                            <label htmlFor="workTitle">작업 제목</label>
                             <input required type="text" name="workTitle" />
                         </div>
                         <div className="form-group">
-                            <label for = "workState">작업 상태</label>
+                            <label htmlFor="workState">작업 상태</label>
                             <select required name="workState">
                                 <option value="0">할 일</option>
                                 <option value="1">진행 중</option>
@@ -121,39 +114,27 @@ const Work = () => {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label for = "startDate">시작일</label>
-                            <input required type="text" name="startDate" />
-                        </div>
-                        <div className="form-group">
-                            <label for = "finishDate">완료일</label>
-                            <input required type="text" name="finishDate" />
-                        </div>
-
-
-                        {/* <div className="form-group">
-                            <label for="startDate">시작일</label>
+                            <label htmlFor="startDate">시작일</label>
                             <DatePicker
-                                selected={startDate} // startDate는 state로 선언되어야 합니다.
-                                onChange={date => setStartDate(date)} // startDate 상태를 업데이트합니다.
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                                dateFormat="yyyy-MM-dd"
                             />
                         </div>
                         <div className="form-group">
-                            <label for="finishDate">완료일</label>
+                            <label htmlFor="finishDate">완료일</label>
                             <DatePicker
-                                selected={finishDate} // finishDate는 state로 선언되어야 합니다.
-                                onChange={date => setFinishDate(date)} // finishDate 상태를 업데이트합니다.
+                                selected={finishDate}
+                                onChange={(date) => setFinishDate(date)}
+                                dateFormat="yyyy-MM-dd"
                             />
-                        </div> */}
-
-
-                        <div className="form-group">
-                            <label for = "workContent">작업 내용</label>
-                            <textarea required="" cols="50" rows="10" id="workContent" name="workContent"></textarea>
                         </div>
-
+                        <div className="form-group">
+                            <label htmlFor="workContent">작업 내용</label>
+                            <textarea required cols="50" rows="10" id="workContent" name="workContent"></textarea>
+                        </div>
                         <button type="submit" className="form-submit-button">작업 추가</button>
-                        {/* 팝업 닫기 버튼 */}
-                    <button type="button" className="form-submit-button" onClick={() => setShowAddTodo(false)}>창 닫기</button>
+                        <button type="button" className="form-submit-button" onClick={handleCloseModal}>창 닫기</button>
                     </form>
                 </div>
             )}

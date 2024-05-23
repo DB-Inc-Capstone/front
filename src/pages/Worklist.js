@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import MenuBar from "../components/MenuBar";
 import "./Worklist.css";
@@ -44,15 +47,8 @@ const Worklist = () => {
 
   const fetchData = async () => {
     const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
-    /*
-    if (Array.isArray(response.data)) {
-        setTodoList(response.data);
-    } else {
-        console.error("Unexpected response data:", response.data);
-        setTodoList([]); // 응답이 배열이 아닌 경우 빈 배열로 설정
-    }*/
     setTodoList(response.data.workinfos);
-};
+  };
 
   useEffect(() => {
     fetchData();
@@ -105,11 +101,19 @@ const Worklist = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="startDate">시작일</label>
-                        <input type="text" id="startDate" name="startDate" value={editWork.startDate || ""} onChange={(e) => setEditWork({ ...editWork, startDate: e.target.value })} />
+                        <DatePicker
+                            selected={moment(editWork.startDate).toDate()} // Moment.js 객체를 JavaScript Date 객체로 변환
+                            onChange={(date) => setEditWork({ ...editWork, startDate: moment(date).format("YYYY-MM-DD") })} // 선택된 날짜를 ISO 형식으로 변환하여 상태에 설정
+                            dateFormat="yyyy-MM-dd" // 날짜 형식 설정
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="finishDate">완료일</label>
-                        <input type="text" id="finishDate" name="finishDate" value={editWork.finishDate || ""} onChange={(e) => setEditWork({ ...editWork, finishDate: e.target.value })} />
+                        <DatePicker
+                            selected={moment(editWork.finishDate).toDate()} // Moment.js 객체를 JavaScript Date 객체로 변환
+                            onChange={(date) => setEditWork({ ...editWork, finishDate: moment(date).format("YYYY-MM-DD") })} // 선택된 날짜를 ISO 형식으로 변환하여 상태에 설정
+                            dateFormat="yyyy-MM-dd" // 날짜 형식 설정
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="workContent">작업 내용</label>

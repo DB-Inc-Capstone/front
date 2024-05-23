@@ -9,7 +9,8 @@ const port = 9002;
 const Issue = () => {
   const navigate = useNavigate();
 
-  const [todoList, setTodoList] = useState([]);
+  const [issueList, setIssueList] = useState([]);
+  const [workList, setWorkList] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null); // 선택된 작업 상태
   const [editIssue, setEditIssue] = useState({}); // 수정할 작업 정보 상태
   const { workerID } = useContext(WorkerContext); // login한 사원 번호
@@ -24,7 +25,7 @@ const Issue = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`http://localhost:8080/work/issue/${selectedIssue.issueID}`, editIssue);
+      await axios.put(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/issue/${selectedIssue.issueID}`, editIssue);
 
       // 수정된 내용을 선택된 작업에 반영
       setSelectedIssue({ ...selectedIssue, ...editIssue });
@@ -41,8 +42,11 @@ const Issue = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work/issue');
-      setTodoList(response.data.issueinfos);
+      const issueResponse = await axios.get(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`);
+      setIssueList(issueResponse.data.issueinfos);
+
+      const workResponse = await axios.get(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work`);
+      setWorkList(workResponse.data.workinfos);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -58,7 +62,7 @@ const Issue = () => {
     const issueContent = e.target.issueContent.value;
     const issueState = e.target.issueState.value;
 
-    await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work/issue', { issueTitle, workID, issueContent, issueState });
+    await axios.post(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`, { issueTitle, workID, issueContent, issueState });
     setShowAddTodo(false); // 작업 추가창을 닫습니다.
     fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
 };
@@ -75,6 +79,11 @@ const handleCloseModal = () => {
     fetchData();
   }, []);
 
+  const getWorkTitle = (workID) => {
+    const work = workList.find(work => work.workID === workID);
+    return work ? work.workTitle : "Unknown Work";
+  };
+
   return (
     <div className="container">
       <MenuBar />
@@ -90,12 +99,12 @@ const handleCloseModal = () => {
             </tr>
           </thead>
           <tbody>
-            {todoList?.slice(0, 13).map((todo) => (
-              <tr key={todo.workID} onClick={() => handleIssueClick(todo)}>
-                <td>{todo.issueTitle}</td>
-                <td>{todo.workTitle}</td>
-                <td>{todo.issueContent}</td>
-                <td>{todo.issueState === 0 ? "할 일" : (todo.issueState === 1 ? "진행 중" : "완료")}</td>
+            {issueList?.slice(0, 13).map((issue) => (
+              <tr key={issue.issueID} onClick={() => handleIssueClick(issue)}>
+                <td>{issue.issueTitle}</td>
+                <td>{getWorkTitle(issue.workID)}</td>
+                <td>{issue.issueContent}</td>
+                <td>{issue.issueState === 0 ? "할 일" : (issue.issueState === 1 ? "진행 중" : "완료")}</td>
               </tr>
             ))}
           </tbody>
@@ -112,15 +121,26 @@ const handleCloseModal = () => {
           <div className="add-todo">
               <form onSubmit={onSubmitHandler}>
                   <div className="form-group">
-                      <label for = "issueTitle">이슈 제목</label>
+                      <label htmlFor="issueTitle">이슈 제목</label>
                       <input required type="text" name="issueTitle" />
                   </div>
                   <div className="form-group">
-                      <label for = "workID">작업 아이디</label>
-                      <input required type="text" name="workID" />
-                  </div>
+                      <label htmlFor="workTitle">관련 작업</label>
+                      <select
+                        id="workTitle"
+                        name="workID"
+                        required
+                      >
+                        <option value="">작업 제목 선택</option>
+                        {workList.map((work) => (
+                          <option key={work.workID} value={work.workID}>
+                            {work.workTitle}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   <div className="form-group">
-                      <label for = "issueState">이슈 상태</label>
+                      <label htmlFor="issueState">이슈 상태</label>
                       <select required name="issueState">
                           <option value="0">할 일</option>
                           <option value="1">진행 중</option>
@@ -128,13 +148,13 @@ const handleCloseModal = () => {
                       </select>
                   </div>
                   <div className="form-group">
-                      <label for = "issueContent">이슈 내용</label>
-                      <textarea required="" cols="50" rows="10" id="issueContent" name="issueContent">          </textarea>
+                      <label htmlFor="issueContent">이슈 내용</label>
+                      <textarea required cols="50" rows="10" id="issueContent" name="issueContent"></textarea>
                   </div>
 
                   <button type="submit" className="form-submit-button">작업 추가</button>
                   {/* 팝업 닫기 버튼 */}
-              <button type="button" className="form-submit-button" onClick={() => setShowAddTodo(false)}>창 닫기</button>
+              <button type="button" className="form-submit-button" onClick={handleCloseModal}>창 닫기</button>
               </form>
           </div>
         )}
@@ -150,8 +170,24 @@ const handleCloseModal = () => {
                         <input type="text" id="issueTitle" name="issueTitle" value={editIssue.issueTitle || ""} onChange={(e) => setEditIssue({ ...editIssue, issueTitle: e.target.value })} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="workTitle">관련 작업</label>
-                        <input type="text" id="workTitle" name="workTitle" value={editIssue.workTitle || ""} onChange={(e) => setEditIssue({ ...editIssue, issueTitle: e.target.value })} />
+                      <label htmlFor="workTitle">관련 작업</label>
+                      <select
+                        id="workTitle"
+                        name="workID"
+                        value={editIssue.workID || ""}
+                        onChange={(e) => {
+                          const selectedWork = workList.find(work => work.workID === e.target.value);
+                          setEditIssue({ ...editIssue, workID: e.target.value, workTitle: selectedWork?.workTitle });
+                        }}
+                        required
+                      >
+                        <option value="">작업 제목 선택</option>
+                        {workList.map((work) => (
+                          <option key={work.workID} value={work.workID}>
+                            {work.workTitle}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="issueState">이슈 상태</label>
