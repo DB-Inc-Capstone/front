@@ -4,11 +4,12 @@ import axios from "axios";
 import { WorkerContext } from './WorkerContext';
 import MenuBar from "../components/MenuBar";
 import "./Issue.css";
+const port = 9002;
 
 const Issue = () => {
   const navigate = useNavigate();
 
-  const [todoList, setTodoList] = useState(null);
+  const [todoList, setTodoList] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null); // 선택된 작업 상태
   const [editIssue, setEditIssue] = useState({}); // 수정할 작업 정보 상태
   const { workerID } = useContext(WorkerContext); // login한 사원 번호
@@ -40,8 +41,8 @@ const Issue = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/work/issue");
-      setTodoList(response.data);
+      const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work/issue');
+      setTodoList(response.data.issueinfos);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -57,7 +58,7 @@ const Issue = () => {
     const issueContent = e.target.issueContent.value;
     const issueState = e.target.issueState.value;
 
-    await axios.post('http://localhost:8080/work/issue/create', { issueTitle, workID, issueContent, issueState });
+    await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work/issue', { issueTitle, workID, issueContent, issueState });
     setShowAddTodo(false); // 작업 추가창을 닫습니다.
     fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
 };
@@ -94,7 +95,7 @@ const handleCloseModal = () => {
                 <td>{todo.issueTitle}</td>
                 <td>{todo.workTitle}</td>
                 <td>{todo.issueContent}</td>
-                <td>{todo.workState === 0 ? "할 일" : (todo.workState === 1 ? "진행 중" : "완료")}</td>
+                <td>{todo.issueState === 0 ? "할 일" : (todo.issueState === 1 ? "진행 중" : "완료")}</td>
               </tr>
             ))}
           </tbody>

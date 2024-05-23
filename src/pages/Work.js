@@ -22,7 +22,6 @@ const Work = () => {
     const [finishDate, setFinishDate] = useState(new Date());
     const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
 
-    console.log(workerID);
     const fetchData = async () => {
         const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
         /*
