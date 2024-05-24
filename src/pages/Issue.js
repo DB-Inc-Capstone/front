@@ -25,7 +25,7 @@ const Issue = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/issue/${selectedIssue.issueID}`, editIssue);
+      await axios.put(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue/${selectedIssue.issueID}`, editIssue);
       // 수정된 내용을 선택된 작업에 반영
       setSelectedIssue({ ...selectedIssue, ...editIssue });
       fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
@@ -41,10 +41,10 @@ const Issue = () => {
 
   const fetchData = async () => {
     try {
-      const issueResponse = await axios.get(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`);
+      const issueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`);
       setIssueList(issueResponse.data.issueinfos);
 
-      const workResponse = await axios.get(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work`);
+      const workResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
       setWorkList(workResponse.data.workinfos);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -61,7 +61,7 @@ const Issue = () => {
     const issueContent = e.target.issueContent.value;
     const issueState = e.target.issueState.value;
 
-    await axios.post(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`, { issueTitle, workID, issueContent, issueState });
+    await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`, { issueTitle, workID, issueContent, issueState });
     setShowAddTodo(false); // 작업 추가창을 닫습니다.
     fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
 };

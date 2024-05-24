@@ -17,11 +17,17 @@ const Work = () => {
     const [todoList, setTodoList] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
+    const [workerList, setWorkerList] = useState([]); // 작업자 목록 조회한 값
     const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
+    const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
 
     const fetchData = async () => {
-        const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:' + port + '/work');
-        setTodoList(response.data.workinfos);
+        const response = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
+        const workerresponse = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:9001/worker');
+        const fetchedTodoList = response.data.workinfos;
+        const filteredTodoList = (choice === "0" ? fetchedTodoList : fetchedTodoList.filter(todo => todo.workerID === workerID));
+        setTodoList(filteredTodoList);
+        setWorkerList(workerresponse.data.workers);
     };
 
     const onSubmitHandler = async (e) => {
@@ -30,13 +36,15 @@ const Work = () => {
         const workTitle = e.target.workTitle.value;
         const workContent = e.target.workContent.value;
         const workState = e.target.workState.value;
+        const workerID = e.target.workerID.value;
         const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
         const finishDateFormatted = moment(finishDate).format('YYYY-MM-DD');
 
-        await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:' + port + '/work', {
+        await axios.post('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:' + port + '/work', {
             workTitle,
             workContent,
             workState,
+            //workerID, // login한 사원의 id (username)
             startDate: startDateFormatted,
             finishDate: finishDateFormatted
         });
@@ -54,11 +62,22 @@ const Work = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [choice]);
+
+    const handleChoiceChange = (e) => {
+        setChoice(e.target.value);
+        fetchData();
+    };
 
     return (
         <div className="container">
             <MenuBar />
+            <div className="filter-choice">
+                <select value={choice} onChange={handleChoiceChange}>
+                    <option value="0">전체 작업 조회</option>
+                    <option value="1">내 작업 조회</option>
+                </select>
+            </div>
             <div className="add-button">
                 <button onClick={handleAddTodoClick}>📖 할 일 +</button>
             </div>
@@ -111,6 +130,17 @@ const Work = () => {
                                 <option value="0">할 일</option>
                                 <option value="1">진행 중</option>
                                 <option value="2">완료</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="workerID">작업자</label>
+                            <select id="workerID" name="workerID" required>
+                                <option value="">작업자 선택</option>
+                                {workerList.map((worker) => (
+                                    <option key={worker.id} value={worker.username}>
+                                        {worker.username}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="form-group">

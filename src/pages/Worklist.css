@@ -47,8 +47,11 @@
     width: 20%; /* Work 셀의 너비 */
 }
 
+.worker {
+    width: 10%;
+}
 .summary {
-    width: 50%; /* Summary 셀의 너비 */
+    width: 40%; /* Summary 셀의 너비 */
 }
 
 .status {
@@ -78,4 +81,18 @@ table tr:hover {
     background: white;
     box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 0px 105px 63px rgba(0, 0, 0, 0.05), 0px 47px 47px rgba(0, 0, 0, 0.09), 0px 12px 26px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
     border-radius: 26px;
+}
+
+.filter-choice {
+    position: absolute;
+    top: 6%;
+    left: 23%;
+    transform: translate(-50%, -50%);
+    width: 25%;
+    height: 4%;
+    border-radius: 1rem;
+    padding: 8px;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
 }
