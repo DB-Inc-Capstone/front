@@ -18,6 +18,8 @@ const Worklist = () => {
   const [todoList, setTodoList] = useState([]);
   const [selectedWork, setSelectedWork] = useState(null); // 선택된 작업 상태
   const [editWork, setEditWork] = useState({}); // 수정할 작업 정보 상태
+  const [workerList, setWorkerList] = useState([]); // 작업자 목록 조회한 값
+  const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
   const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
 
   // 작업 내용 클릭 시 팝업 표시 및 선택된 작업 업데이트
@@ -30,7 +32,7 @@ const Worklist = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`, editWork);
+      await axios.put(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`, editWork);
 
       // 수정된 내용을 선택된 작업에 반영
       setSelectedWork({ ...selectedWork, ...editWork });
@@ -46,23 +48,38 @@ const Worklist = () => {
   };
 
   const fetchData = async () => {
-    const response = await axios.get('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
-    setTodoList(response.data.workinfos);
+    const response = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
+    const workerresponse = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:9001/worker');
+    const fetchedTodoList = response.data.workinfos;
+    const filteredTodoList = (choice === "0" ? fetchedTodoList : fetchedTodoList.filter(todo => todo.workerID === workerID));
+    setTodoList(filteredTodoList);
+    setWorkerList(workerresponse.data.workers);
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [choice]);
+
+  const handleChoiceChange = (e) => {
+    setChoice(e.target.value);
+    fetchData();
+  };
 
   return (
     <div className="container">
       <MenuBar />
-
+      <div className="filter-choice">
+          <select value={choice} onChange={handleChoiceChange}>
+              <option value="0">전체 작업 조회</option>
+              <option value="1">내 작업 조회</option>
+          </select>
+      </div>
       <div className="worklist">
         <table>
           <thead>
             <tr>
               <th className="work"># Work</th>
+              <th className="worker">😀 worker</th>
               <th className="summary">📖 Summary</th>
               <th className="status">+ Status</th>
               <th className="start-date">⏰ Start Date</th>
@@ -72,6 +89,7 @@ const Worklist = () => {
             {todoList?.slice(0, 13).map((todo) => (
               <tr key={todo.workID} onClick={() => handleWorkClick(todo)}>
                 <td>{todo.workTitle}</td>
+                <td>{todo.workerID}</td>
                 <td>{todo.workContent}</td>
                 <td>{todo.workState === 0 ? "할 일" : (todo.workState === 1 ? "진행 중" : "완료")}</td>
                 <td>{todo.startDate}</td>
@@ -97,6 +115,17 @@ const Worklist = () => {
                             <option value="0">할 일</option>
                             <option value="1">진행 중</option>
                             <option value="2">완료</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="workerID">작업자</label>
+                        <select id="workerID" name="workerID" required>
+                            <option value="">작업자 선택</option>
+                            {workerList.map((worker) => (
+                                <option key={worker.id} value={worker.username}>
+                                    {worker.username}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="form-group">

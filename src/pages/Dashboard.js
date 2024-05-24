@@ -48,8 +48,8 @@ function Dashboard() {
       labels: ['Have Issue', 'Continuing Issue'],
         datasets: [{
             data: [haveToDoIssue, continuingIssue],
-            backgroundColor: ['#36A2EB', '#FF6384'],
-            hoverBackgroundColor: ['#36A2EB', '#FF6384']
+            backgroundColor: ['#FFCE56', '#FF6384'],
+            hoverBackgroundColor: ['#FFCE56', '#FF6384']
         }]
     }
 

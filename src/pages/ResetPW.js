@@ -22,7 +22,7 @@ const ResetPW = () => {
         e.preventDefault();
 
         try { // /worker/checkid 로 변경
-            const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/valid', {
+            const response = await axios.post('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/valid', {
                 username: id,
                 phoneNumber: phone_number
             });

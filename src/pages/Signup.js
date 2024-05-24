@@ -22,7 +22,7 @@ const Signup = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker', {
+      const response = await axios.post('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/worker', {
         username: id,
         password: password,
         nickname: name,
