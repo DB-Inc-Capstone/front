@@ -31,7 +31,11 @@ const Login = () => {
             });
             setErrorMessage(response.data.message);
             console.log('Login successful!', response.data);
-            setWorkerID(id);
+            const workers = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:9001/worker');
+            const workerlist = workers.data.workers;
+            const targetWorker = workerlist.filter(worker => worker.username === id);
+            const workerID = targetWorker[0].id;
+            setWorkerID(workerID);
             navigate("/work");
         } catch (error) {
             setErrorMessage(error.response.data.message);
