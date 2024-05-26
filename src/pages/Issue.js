@@ -14,6 +14,7 @@ const Issue = () => {
   const [selectedIssue, setSelectedIssue] = useState(null); // 선택된 작업 상태
   const [editIssue, setEditIssue] = useState({}); // 수정할 작업 정보 상태
   const { workerID } = useContext(WorkerContext); // login한 사원 번호
+  const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
 
   // 작업 내용 클릭 시 팝업 표시 및 선택된 작업 업데이트
   const handleIssueClick = (issue) => {
@@ -41,11 +42,16 @@ const Issue = () => {
 
   const fetchData = async () => {
     try {
-      const issueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`);
-      setIssueList(issueResponse.data.issueinfos);
-
       const workResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
-      setWorkList(workResponse.data.workinfos);
+      const issueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`);
+      const workList = workResponse.data.workinfos;
+      const issueList = issueResponse.data.issueinfos;
+      const workIDList = workList.filter(work => work.workerID === workerID).map(work => work.workID);
+      const filteredissueList = (choice === "0" ? issueList : issueList.filter(issue => workIDList.includes(issue.workID)));
+
+      setWorkList(workList);
+      setIssueList(filteredissueList);
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -76,18 +82,28 @@ const handleCloseModal = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [choice]);
 
   const getWorkTitle = (workID) => {
     const work = workList.find(work => work.workID === workID);
     return work ? work.workTitle : "Unknown Work";
   };
 
+  const handleChoiceChange = (e) => {
+    setChoice(e.target.value);
+    fetchData();
+  };
+
   return (
     <div className="container">
       <MenuBar />
-
-      <div className="issuelist">
+      <div className="filter-choice">
+          <select value={choice} onChange={handleChoiceChange}>
+              <option value="0">전체 이슈 조회</option>
+              <option value="1">내 이슈 조회</option>
+          </select>
+      </div>
+      <div className="issuelist" style={{ maxHeight: "800px", overflowY: "auto" }}>
         <table>
           <thead>
             <tr>
@@ -98,7 +114,7 @@ const handleCloseModal = () => {
             </tr>
           </thead>
           <tbody>
-            {issueList?.slice(0, 13).map((issue) => (
+            {issueList?.map((issue) => (
               <tr key={issue.issueID} onClick={() => handleIssueClick(issue)}>
                 <td>{issue.issueTitle}</td>
                 <td>{getWorkTitle(issue.workID)}</td>

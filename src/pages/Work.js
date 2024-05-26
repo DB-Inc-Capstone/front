@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import MenuBar from "../components/MenuBar";
 import "./Work.css";
 import { WorkerContext } from "./WorkerContext";
+import { type } from "@testing-library/user-event/dist/type";
 
 const port = 9002;
 
@@ -18,7 +19,7 @@ const Work = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
     const [workerList, setWorkerList] = useState([]); // 작업자 목록 조회한 값
-    const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
+    const { workerID } = useContext(WorkerContext); //  // login한 사원의 ID
     const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
 
     const fetchData = async () => {
@@ -36,17 +37,17 @@ const Work = () => {
         const workTitle = e.target.workTitle.value;
         const workContent = e.target.workContent.value;
         const workState = e.target.workState.value;
-        const workerID = e.target.workerID.value;
         const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
         const finishDateFormatted = moment(finishDate).format('YYYY-MM-DD');
-
+        const targetID = e.target.workerID.value;
+        
         await axios.post('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:' + port + '/work', {
             workTitle,
             workContent,
             workState,
-            //workerID, // login한 사원의 id (username)
             startDate: startDateFormatted,
-            finishDate: finishDateFormatted
+            finishDate: finishDateFormatted,
+            workerID: targetID, // login한 사원의 id (username)
         });
         setShowAddTodo(false); // 작업 추가창을 닫습니다.
         fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
@@ -88,8 +89,8 @@ const Work = () => {
                 <button>완료</button>
             </div>
             <div className="todo-list">
-                <div className="form">
-                    {todoList?.filter(todo => todo.workState === 0).slice(0, 4).map((todo) => (
+                <div className="form" style={{ maxHeight: "600px", overflowY: "auto" }}>
+                    {todoList?.filter(todo => todo.workState === 0).map((todo) => (
                         <div key={todo.workID} className="todo-item">
                             <label>{todo.workTitle}</label>
                             <p>{todo.workContent}</p>
@@ -98,8 +99,8 @@ const Work = () => {
                 </div>
             </div>
             <div className="todo-list-1">
-                <div className="form">
-                    {todoList?.filter(todo => todo.workState === 1).slice(0, 4).map((todo) => (
+                <div className="form" style={{ maxHeight: "600px", overflowY: "auto" }}>
+                    {todoList?.filter(todo => todo.workState === 1).map((todo) => (
                         <div key={todo.workID} className="todo-item">
                             <label>{todo.workTitle}</label>
                             <p>{todo.workContent}</p>
@@ -108,8 +109,8 @@ const Work = () => {
                 </div>
             </div>
             <div className="todo-list-2">
-                <div className="form">
-                    {todoList?.filter(todo => todo.workState === 2).slice(0, 4).map((todo) => (
+                <div className="form" style={{ maxHeight: "600px", overflowY: "auto" }}>
+                    {todoList?.filter(todo => todo.workState === 2).map((todo) => (
                         <div key={todo.workID} className="todo-item">
                             <label>{todo.workTitle}</label>
                             <p>{todo.workContent}</p>
@@ -137,7 +138,7 @@ const Work = () => {
                             <select id="workerID" name="workerID" required>
                                 <option value="">작업자 선택</option>
                                 {workerList.map((worker) => (
-                                    <option key={worker.id} value={worker.username}>
+                                    <option key={worker.id} value={worker.id}>
                                         {worker.username}
                                     </option>
                                 ))}

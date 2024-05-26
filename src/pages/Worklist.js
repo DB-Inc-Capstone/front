@@ -30,10 +30,10 @@ const Worklist = () => {
 
   // 팝업에서 내용 수정 후 저장 시 작업 내용 업데이트
   const handleSaveEdit = async () => {
+    console.log(editWork);
     try {
       // 수정된 내용을 서버에 반영
       await axios.put(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`, editWork);
-
       // 수정된 내용을 선택된 작업에 반영
       setSelectedWork({ ...selectedWork, ...editWork });
       fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
@@ -74,7 +74,7 @@ const Worklist = () => {
               <option value="1">내 작업 조회</option>
           </select>
       </div>
-      <div className="worklist">
+      <div className="worklist" style={{ maxHeight: "800px", overflowY: "auto" }}>
         <table>
           <thead>
             <tr>
@@ -86,10 +86,12 @@ const Worklist = () => {
             </tr>
           </thead>
           <tbody>
-            {todoList?.slice(0, 13).map((todo) => (
+            {todoList?.map((todo) => (
               <tr key={todo.workID} onClick={() => handleWorkClick(todo)}>
                 <td>{todo.workTitle}</td>
-                <td>{todo.workerID}</td>
+                <td>
+                    {workerList.find(worker => worker.id === todo.workerID)?.username || 'Unknown'}
+                </td>
                 <td>{todo.workContent}</td>
                 <td>{todo.workState === 0 ? "할 일" : (todo.workState === 1 ? "진행 중" : "완료")}</td>
                 <td>{todo.startDate}</td>
@@ -119,10 +121,10 @@ const Worklist = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="workerID">작업자</label>
-                        <select id="workerID" name="workerID" required>
+                        <select id="workerID" name="workerID" required value={editWork.workerID} onChange={(e) => setEditWork({ ...editWork, workerID: parseInt(e.target.value) })}>
                             <option value="">작업자 선택</option>
                             {workerList.map((worker) => (
-                                <option key={worker.id} value={worker.username}>
+                                <option key={worker.id} value={worker.id}>
                                     {worker.username}
                                 </option>
                             ))}
