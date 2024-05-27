@@ -105,7 +105,7 @@ const Worklist = () => {
       {selectedWork && (
         <div className="popup-content">
             <h2>Work Content</h2>
-            <div className="add-todo">
+            <div className="add-todo" style={{ maxHeight: "1200px", overflowY: "auto" }}>
                 <form>
                     <div className="form-group">
                         <label htmlFor="workTitle">작업 제목</label>
