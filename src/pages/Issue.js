@@ -40,6 +40,18 @@ const Issue = () => {
     }
   };
 
+  const handleDeleteIssue = async () => {
+    try {
+      await axios.delete(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedIssue.workID}/issue/${selectedIssue.issueID}`);
+      fetchData(); // 작업 삭제 후 작업 목록을 다시 불러옵니다.
+    } catch (error) {
+      console.error("Error deleting issue:", error);
+    } finally {
+      // 팝업 닫기
+      setSelectedIssue(null);
+    }
+  };
+
   const fetchData = async () => {
     try {
       const workResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
@@ -220,6 +232,8 @@ const handleCloseModal = () => {
                     <button type="button" className="form-submit-button" onClick={handleSaveEdit}>Save</button>
                     {/* 팝업 닫기 버튼 */}
                     <button type="button" className="form-submit-button" onClick={() => setSelectedIssue(null)}>Close</button>
+                    {/* 이슈 삭제 버튼 */}
+                    <button type="button" className="form-submit-button-delete" onClick={handleDeleteIssue}>Delete</button>
                 </form>
             </div>
         </div>

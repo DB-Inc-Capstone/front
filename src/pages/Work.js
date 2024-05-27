@@ -139,7 +139,7 @@ const Work = () => {
                                 <option value="">작업자 선택</option>
                                 {workerList.map((worker) => (
                                     <option key={worker.id} value={worker.id}>
-                                        {worker.username}
+                                        {worker.nickname}
                                     </option>
                                 ))}
                             </select>
