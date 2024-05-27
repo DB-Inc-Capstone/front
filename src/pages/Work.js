@@ -119,7 +119,7 @@ const Work = () => {
                 </div>
             </div>
             {showAddTodo && (
-                <div className="add-todo">
+                <div className="add-todo" style={{ maxHeight: "1200px", overflowY: "auto" }}>
                     <form onSubmit={onSubmitHandler}>
                         <div className="form-group">
                             <label htmlFor="workTitle">작업 제목</label>

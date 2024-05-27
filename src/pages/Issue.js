@@ -133,7 +133,7 @@ const handleCloseModal = () => {
 
       {/* 이슈 추가 팝업 */}
       {showAddTodo && (
-          <div className="add-todo">
+          <div className="add-todo" style={{ maxHeight: "1200px", overflowY: "auto" }}>
               <form onSubmit={onSubmitHandler}>
                   <div className="form-group">
                       <label htmlFor="issueTitle">이슈 제목</label>
