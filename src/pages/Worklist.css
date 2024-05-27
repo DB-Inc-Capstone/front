@@ -96,3 +96,18 @@ table tr:hover {
     text-align: center;
     cursor: pointer;
 }
+
+/* Delete button 스타일 추가 */
+.form-submit-button.delete-button {
+    background-color: red; /* 배경색을 빨간색으로 설정 */
+    color: white; /* 글자색을 흰색으로 설정 */
+    border: none; /* 테두리 제거 */
+    padding: 10px 20px; /* 여백 설정 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    cursor: pointer; /* 마우스 모양 변경 */
+    font-size: 1rem; /* 글자 크기 설정 */
+}
+
+.form-submit-button.delete-button:hover {
+    background-color: darkred; /* 호버 시 배경색을 어두운 빨간색으로 변경 */
+}

@@ -23,10 +23,6 @@ const MenuBar = () => {
                 setActiveButton("issues");
                 setSelectedText("이슈");
                 break;
-            case "/work/timeline":
-                setActiveButton("timeline");
-                setSelectedText("타임라인");
-                break;
             case "/work/dashboard":
                 setActiveButton("dashboard");
                 setSelectedText("대시보드");
@@ -48,13 +44,6 @@ const MenuBar = () => {
         setActiveButton("taskList");
         setSelectedText("작업리스트");
         navigate("/work/worklist");
-    };
-    
-    const handleTimelineClick = () => {
-        // 타임라인 버튼이 클릭되었을 때 실행될 코드
-        setActiveButton("timeline");
-        setSelectedText("타임라인");
-        navigate("/work/timeline");
     };
     
     const handleIssuesClick = () => {
@@ -87,7 +76,6 @@ const MenuBar = () => {
             <div className="menu-bar">
                 <button className={activeButton === "taskBoard" ? "active" : ""} onClick={handleTaskBoardClick}>작업보드</button>
                 <button className={activeButton === "taskList" ? "active" : ""} onClick={handleTaskListClick}>작업리스트</button>
-                <button className={activeButton === "timeline" ? "active" : ""} onClick={handleTimelineClick}>타임라인</button>
                 <button className={activeButton === "issues" ? "active" : ""} onClick={handleIssuesClick}>이슈</button>
                 <button className={activeButton === "dashboard" ? "active" : ""} onClick={handleDashboardClick}>대시보드</button>
                 <button className={activeButton === "logout" ? "active" : ""} onClick={handleLogout}>로그아웃</button>

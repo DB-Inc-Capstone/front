@@ -47,6 +47,19 @@ const Worklist = () => {
     }
   };
 
+  // 작업 삭제 처리 함수
+  const handleDeleteWork = async () => {
+    try {
+      await axios.delete(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`);
+      fetchData(); // 작업 삭제 후 작업 목록을 다시 불러옵니다.
+    } catch (error) {
+      console.error("Error deleting work:", error);
+    } finally {
+      // 팝업 닫기
+      setSelectedWork(null);
+    }
+  };
+
   const fetchData = async () => {
     const response = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
     const workerresponse = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:9001/worker');
@@ -125,7 +138,7 @@ const Worklist = () => {
                             <option value="">작업자 선택</option>
                             {workerList.map((worker) => (
                                 <option key={worker.id} value={worker.id}>
-                                    {worker.username}
+                                    {worker.nickname}
                                 </option>
                             ))}
                         </select>
@@ -154,6 +167,8 @@ const Worklist = () => {
                     <button type="button" className="form-submit-button" onClick={handleSaveEdit}>Save</button>
                     {/* 팝업 닫기 버튼 */}
                     <button type="button" className="form-submit-button" onClick={() => setSelectedWork(null)}>Close</button>
+                    {/* 삭제 버튼 */}
+                    <button type="button" className="form-submit-button-delete" onClick={handleDeleteWork}>Delete</button>
                 </form>
             </div>
         </div>
