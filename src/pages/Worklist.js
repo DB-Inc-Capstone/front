@@ -4,13 +4,11 @@ import axios from "axios";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import MenuBar from "../components/MenuBar";
 import "./Worklist.css";
-
 import { WorkerContext } from './WorkerContext';
 
-const port = 9002;
+const port = 9000;
 
 const Worklist = () => {
   const navigate = useNavigate();
@@ -61,8 +59,8 @@ const Worklist = () => {
   };
 
   const fetchData = async () => {
-    const response = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
-    const workerresponse = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:9001/worker');
+    const response = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
+    const workerresponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`);
     const fetchedTodoList = response.data.workinfos;
     const filteredTodoList = (choice === "0" ? fetchedTodoList : fetchedTodoList.filter(todo => todo.workerID === workerID));
     setTodoList(filteredTodoList);

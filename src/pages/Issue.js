@@ -4,7 +4,8 @@ import axios from "axios";
 import { WorkerContext } from './WorkerContext';
 import MenuBar from "../components/MenuBar";
 import "./Issue.css";
-const port = 9002;
+
+const port = 9000;
 
 const Issue = () => {
   const navigate = useNavigate();

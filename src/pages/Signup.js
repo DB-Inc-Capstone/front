@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './Signup.css';
-const port = 9001;
+
+const port = 9000;
 
 const Signup = () => {
   const [id, setId] = useState('');
@@ -22,7 +23,7 @@ const Signup = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/worker', {
+      const response = await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`, {
         username: id,
         password: password,
         nickname: name,

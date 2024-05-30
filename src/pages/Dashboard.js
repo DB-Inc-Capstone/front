@@ -7,6 +7,8 @@ import axios from "axios";
 import 'chart.js/auto';
 import './Dashboard.css'
 
+const port = 9003;
+
 function Dashboard() {
     const [totalWork , setTotalWork] = useState(100);
     const [haveToDoWork, setHaveToDoWork] = useState(40);
