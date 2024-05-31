@@ -7,7 +7,7 @@ import './Login.css'
 
 const port = 9000;
 //const backend_url = `http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com:${port}`;
-const backend_url = process.env.REACT_APP_API_GATEWAY_URL;
+const backend_url = 'http://back-apigateway:9000';
 
 const Login = () => {
     const [id, setId] = useState('');
