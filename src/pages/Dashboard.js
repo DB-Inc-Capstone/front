@@ -7,8 +7,8 @@ import './Dashboard.css';
 import { WorkerContext } from './WorkerContext';
 
 const port = 9000;
-//const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
-const backend_url = 'http://localhost';
+//const backend_url = `http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com:${port}`;
+const backend_url = process.env.REACT_APP_API_GATEWAY_URL;
 
 function Dashboard() {
     const [totalWork , setTotalWork] = useState(0);
@@ -23,19 +23,19 @@ function Dashboard() {
 
     const fetchData = async () => {
         try {
-            const workResponse = await axios.get(`${backend_url}:${port}/dashboard/totalwork`);
+            const workResponse = await axios.get(`${backend_url}/dashboard/totalwork`);
             setTotalWork(workResponse.data.totalWork);
             setTotalDoneWork(workResponse.data.doneWork);
             
-            const myWorkResponse = await axios.get(`${backend_url}:${port}/dashboard/totalwork/worker/${workerID}`);
+            const myWorkResponse = await axios.get(`${backend_url}/dashboard/totalwork/worker/${workerID}`);
             setMyTotalWork(myWorkResponse.data.totalWork);
             setMyTotalDoneWork(myWorkResponse.data.doneWork);
             
-            const issueResponse = await axios.get(`${backend_url}:${port}/dashboard/totalissue`);
+            const issueResponse = await axios.get(`${backend_url}/dashboard/totalissue`);
             setTotalIssue(issueResponse.data.totalIssue);
             setTotalDoneIssue(issueResponse.data.doneIssue);
             
-            const myIssueResponse = await axios.get(`${backend_url}:${port}/dashboard/totalissue/worker/${workerID}`);
+            const myIssueResponse = await axios.get(`${backend_url}/dashboard/totalissue/worker/${workerID}`);
             setMyTotalIssue(myIssueResponse.data.totalIssue);
             setMyTotalDoneIssue(myIssueResponse.data.doneIssue);
         } catch (error) {

@@ -6,8 +6,8 @@ import axios from "axios";
 import './Login.css'
 
 const port = 9000;
-//const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
-const backend_url = 'http://localhost';
+//const backend_url = `http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com:${port}`;
+const backend_url = process.env.REACT_APP_API_GATEWAY_URL;
 
 const Login = () => {
     const [id, setId] = useState('');
@@ -28,13 +28,13 @@ const Login = () => {
         e.preventDefault();
         
         try {
-            const response = await axios.post(`${backend_url}:${port}/worker/login`, {
+            const response = await axios.post(`${backend_url}/worker/login`, {
                 username: id,
                 password: password
             });
             setErrorMessage(response.data.message);
             console.log('Login successful!', response.data);
-            const workers = await axios.get(`${backend_url}:${port}/worker`);
+            const workers = await axios.get(`${backend_url}/worker`);
             const workerlist = workers.data.workers;
             const targetWorker = workerlist.filter(worker => worker.username === id);
             const workerID = targetWorker[0].id;

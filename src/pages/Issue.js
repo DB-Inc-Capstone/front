@@ -5,8 +5,8 @@ import MenuBar from "../components/MenuBar";
 import "./Issue.css";
 
 const port = 9000;
-//const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
-const backend_url = 'http://localhost';
+//const backend_url = `http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com:${port}`;
+const backend_url = process.env.REACT_APP_API_GATEWAY_URL;
 
 const Issue = () => {
   const [issueList, setIssueList] = useState([]);
@@ -27,7 +27,7 @@ const Issue = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`${backend_url}:${port}/work/issue/${selectedIssue.issueID}`, editIssue);
+      await axios.put(`${backend_url}/work/issue/${selectedIssue.issueID}`, editIssue);
       // 수정된 내용을 선택된 작업에 반영
       setSelectedIssue({ ...selectedIssue, ...editIssue });
       fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
@@ -43,7 +43,7 @@ const Issue = () => {
 
   const handleDeleteIssue = async () => {
     try {
-      await axios.delete(`${backend_url}:${port}/work/${selectedIssue.workID}/issue/${selectedIssue.issueID}`);
+      await axios.delete(`${backend_url}/work/${selectedIssue.workID}/issue/${selectedIssue.issueID}`);
       fetchData(); // 작업 삭제 후 작업 목록을 다시 불러옵니다.
     } catch (error) {
       console.error("Error deleting issue:", error);
@@ -55,9 +55,9 @@ const Issue = () => {
 
   const fetchData = async () => {
     try {
-      const workResponse = await axios.get(`${backend_url}:${port}/work`);
-      const issueResponse = await axios.get(`${backend_url}:${port}/work/issue`);
-      const workerresponse = await axios.get(`${backend_url}:${port}/worker`);
+      const workResponse = await axios.get(`${backend_url}/work`);
+      const issueResponse = await axios.get(`${backend_url}/work/issue`);
+      const workerresponse = await axios.get(`${backend_url}/worker`);
       const workList = workResponse.data.workinfos;
       const issueList = issueResponse.data.issueinfos;
       const workerList = workerresponse.data.workers;
