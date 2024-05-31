@@ -1,12 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Singup from "./pages/Signup";
 import ResetPW from "./pages/ResetPW";
 import Work from "./pages/Work";
 import Worklist from "./pages/Worklist";
 import Issue from "./pages/Issue";
-import Timeline from "./pages/Timeline";
 import Dashboard from "./pages/Dashboard"
 import { WorkerProvider } from './pages/WorkerContext';
 
@@ -15,7 +13,7 @@ function App() {
     <WorkerProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to="/worker/login" />} />
           <Route path="/worker/login" element={<Login />} />
           <Route path="/worker/signup" element={<Singup />} />
           <Route path="/worker/resetpw" element={<ResetPW />} />
@@ -23,7 +21,6 @@ function App() {
           <Route path="/work" element={<Work />} />
           <Route path="/work/worklist" element={<Worklist />} />
           <Route path="/work/issue" element={<Issue />} />
-          <Route path="/work/timeline" element={<Timeline />} />
           <Route path="/work/dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>

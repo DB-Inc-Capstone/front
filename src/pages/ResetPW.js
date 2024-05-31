@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import './ResetPW.css'
-const port = 9001;
+
+const port = 9000;
 
 const ResetPW = () => {
     const [id, setID] = useState('');
@@ -22,7 +23,7 @@ const ResetPW = () => {
         e.preventDefault();
 
         try { // /worker/checkid 로 변경
-            const response = await axios.post('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/valid', {
+            const response = await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker/valid`, {
                 username: id,
                 phoneNumber: phone_number
             });
@@ -50,7 +51,7 @@ const ResetPW = () => {
         }
 
         try {
-            const response = await axios.post('http://ec2-3-35-47-9.ap-northeast-2.compute.amazonaws.com:'+port+'/worker/resetpw', {
+            const response = await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker/resetpw`, {
                 username: id,
                 phoneNumber: phone_number,
                 password: pswd

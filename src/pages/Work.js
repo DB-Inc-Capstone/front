@@ -1,30 +1,26 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import MenuBar from "../components/MenuBar";
 import "./Work.css";
 import { WorkerContext } from "./WorkerContext";
-import { type } from "@testing-library/user-event/dist/type";
 
-const port = 9002;
+const port = 9000;
 
 const Work = () => {
-    const navigate = useNavigate();
     const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
     const [todoList, setTodoList] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
     const [workerList, setWorkerList] = useState([]); // 작업자 목록 조회한 값
-    const { workerID } = useContext(WorkerContext); //  // login한 사원의 ID
+    const { workerID } = useContext(WorkerContext); //  login한 사원의 ID
     const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
 
     const fetchData = async () => {
-        const response = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:'+port+'/work');
-        const workerresponse = await axios.get('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:9001/worker');
+        const response = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
+        const workerresponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`);
         const fetchedTodoList = response.data.workinfos;
         const filteredTodoList = (choice === "0" ? fetchedTodoList : fetchedTodoList.filter(todo => todo.workerID === workerID));
         setTodoList(filteredTodoList);
@@ -41,7 +37,7 @@ const Work = () => {
         const finishDateFormatted = moment(finishDate).format('YYYY-MM-DD');
         const targetID = e.target.workerID.value;
         
-        await axios.post('http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:' + port + '/work', {
+        await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`, {
             workTitle,
             workContent,
             workState,
