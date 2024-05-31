@@ -52,8 +52,12 @@
     width: 15%; /* Summary 셀의 너비 */
 }
 
+.worker {
+    width: 10%;
+}
+
 .summary {
-    width: 50%; /* Status 셀의 너비 */
+    width: 40%; /* Status 셀의 너비 */
 }
 
 .status {

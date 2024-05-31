@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 import DatePicker from "react-datepicker";
@@ -7,18 +6,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import MenuBar from "../components/MenuBar";
 import "./Work.css";
 import { WorkerContext } from "./WorkerContext";
-import { type } from "@testing-library/user-event/dist/type";
 
 const port = 9000;
 
 const Work = () => {
-    const navigate = useNavigate();
     const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
     const [todoList, setTodoList] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
     const [workerList, setWorkerList] = useState([]); // 작업자 목록 조회한 값
-    const { workerID } = useContext(WorkerContext); //  // login한 사원의 ID
+    const { workerID } = useContext(WorkerContext); //  login한 사원의 ID
     const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
 
     const fetchData = async () => {

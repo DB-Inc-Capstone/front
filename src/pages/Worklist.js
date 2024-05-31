@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 import DatePicker from "react-datepicker";
@@ -11,14 +10,12 @@ import { WorkerContext } from './WorkerContext';
 const port = 9000;
 
 const Worklist = () => {
-  const navigate = useNavigate();
-
   const [todoList, setTodoList] = useState([]);
   const [selectedWork, setSelectedWork] = useState(null); // 선택된 작업 상태
   const [editWork, setEditWork] = useState({}); // 수정할 작업 정보 상태
   const [workerList, setWorkerList] = useState([]); // 작업자 목록 조회한 값
   const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
-  const { workerID } = useContext(WorkerContext); //  // login한 사원 번호
+  const { workerID } = useContext(WorkerContext); //  login한 사원 번호
 
   // 작업 내용 클릭 시 팝업 표시 및 선택된 작업 업데이트
   const handleWorkClick = (work) => {
@@ -28,7 +25,6 @@ const Worklist = () => {
 
   // 팝업에서 내용 수정 후 저장 시 작업 내용 업데이트
   const handleSaveEdit = async () => {
-    console.log(editWork);
     try {
       // 수정된 내용을 서버에 반영
       await axios.put(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`, editWork);
@@ -101,7 +97,7 @@ const Worklist = () => {
               <tr key={todo.workID} onClick={() => handleWorkClick(todo)}>
                 <td>{todo.workTitle}</td>
                 <td>
-                    {workerList.find(worker => worker.id === todo.workerID)?.username || 'Unknown'}
+                    {workerList.find(worker => worker.id === todo.workerID)?.nickname || 'Unknown'}
                 </td>
                 <td>{todo.workContent}</td>
                 <td>{todo.workState === 0 ? "할 일" : (todo.workState === 1 ? "진행 중" : "완료")}</td>

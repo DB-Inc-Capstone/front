@@ -1,37 +1,63 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import MenuBar from "../components/MenuBar";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Doughnut, Bar } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import axios from "axios";
 import 'chart.js/auto';
-import './Dashboard.css'
+import './Dashboard.css';
+import { WorkerContext } from './WorkerContext';
 
-const port = 9003;
+const port = 9000;
 
 function Dashboard() {
-    const [totalWork , setTotalWork] = useState(100);
-    const [haveToDoWork, setHaveToDoWork] = useState(40);
-    const [continuingWork, setContinuingWork] = useState(30);
-    const [doneWork, setDoneWork] = useState(30);
-    const [totalIssue , setTotalIssue] = useState(100);
-    const [haveToDoIssue, setHaveToDoIssue] = useState(20);
-    const [continuingIssue, setContinuingIssue] = useState(40);
-    const [doneIssue, setDoneIssue] = useState(40);
+    const [totalWork , setTotalWork] = useState(0);
+    const [totalDoneWork, setTotalDoneWork] = useState(0);
+    const [totalIssue , setTotalIssue] = useState(0);
+    const [totalDoneIssue, setTotalDoneIssue] = useState(0);
+    const [myTotalWork , setMyTotalWork] = useState(0);
+    const [myTotalDoneWork, setMyTotalDoneWork] = useState(0);
+    const [myTotalIssue , setMyTotalIssue] = useState(0);
+    const [myTotalDoneIssue, setMyTotalDoneIssue] = useState(0);
+    const { workerID } = useContext(WorkerContext); //  login한 사원의 ID
+
+    const fetchData = async () => {
+        try {
+            const workResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalwork`);
+            setTotalWork(workResponse.data.totalWork);
+            setTotalDoneWork(workResponse.data.doneWork);
+            
+            const myWorkResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalwork/worker/${workerID}`);
+            setMyTotalWork(myWorkResponse.data.totalWork);
+            setMyTotalDoneWork(myWorkResponse.data.doneWork);
+            
+            const issueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalissue`);
+            setTotalIssue(issueResponse.data.totalIssue);
+            setTotalDoneIssue(issueResponse.data.doneIssue);
+            
+            const myIssueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalissue/worker/${workerID}`);
+            setMyTotalIssue(myIssueResponse.data.totalIssue);
+            setMyTotalDoneIssue(myIssueResponse.data.doneIssue);
+        } catch (error) {
+            console.error("Error fetching data", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    });
 
     const total_done_workData = {
         labels: ['Done Work', 'Remaining Work'],
         datasets: [{
-            data: [doneWork, totalWork - doneWork],
+            data: [totalDoneWork, totalWork - totalDoneWork],
             backgroundColor: ['#36A2EB', '#FF6384'],
             hoverBackgroundColor: ['#36A2EB', '#FF6384']
         }]
     };
 
-    const have_cont_workData = {
-      labels: ['Have Work', 'Continuing Work'],
+    const total_mydone_workData = {
+      labels: ['My Done Work', 'My Remaining Work'],
         datasets: [{
-            data: [haveToDoWork, continuingWork],
+            data: [myTotalDoneWork, myTotalWork - myTotalDoneWork],
             backgroundColor: ['#36A2EB', '#FF6384'],
             hoverBackgroundColor: ['#36A2EB', '#FF6384']
         }]
@@ -40,16 +66,16 @@ function Dashboard() {
     const total_done_issueData = {
         labels: ['Done Issue', 'Remaining Issue'],
         datasets: [{
-            data: [doneIssue, totalIssue - doneIssue],
+            data: [totalDoneIssue, totalIssue - totalDoneIssue],
             backgroundColor: ['#FFCE56', '#FF6384'],
             hoverBackgroundColor: ['#FFCE56', '#FF6384']
         }]
     };
 
-    const have_cont_issueData = {
-      labels: ['Have Issue', 'Continuing Issue'],
+    const total_mydone_issueData = {
+      labels: ['My Done Issue', 'My Remaining Issue'],
         datasets: [{
-            data: [haveToDoIssue, continuingIssue],
+            data: [myTotalDoneIssue, myTotalIssue - myTotalDoneIssue],
             backgroundColor: ['#FFCE56', '#FF6384'],
             hoverBackgroundColor: ['#FFCE56', '#FF6384']
         }]
@@ -64,8 +90,8 @@ function Dashboard() {
                     <Doughnut data={total_done_workData} />
                 </div>
                 <div className="chart-container">
-                    <h3> Have-Cont Work Ratio </h3>
-                    <Doughnut data={have_cont_workData} />
+                    <h3> My Total-Done Work Ratio </h3>
+                    <Doughnut data={total_mydone_workData} />
                 </div>
             </div>
             <div className="dashboard-container">
@@ -74,8 +100,8 @@ function Dashboard() {
                     <Doughnut data={total_done_issueData} />
                 </div>
                 <div className="chart-container">
-                    <h3> Have-Cont Issue Ratio </h3>
-                    <Doughnut data={have_cont_issueData} />
+                    <h3> My Total-Done Issue Ratio </h3>
+                    <Doughnut data={total_mydone_issueData} />
                 </div>
             </div>
         </div>
