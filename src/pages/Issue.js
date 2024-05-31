@@ -5,7 +5,8 @@ import MenuBar from "../components/MenuBar";
 import "./Issue.css";
 
 const port = 9000;
-const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
+//const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
+const backend_url = 'http://localhost';
 
 const Issue = () => {
   const [issueList, setIssueList] = useState([]);
