@@ -8,6 +8,7 @@ import "./Work.css";
 import { WorkerContext } from "./WorkerContext";
 
 const port = 9000;
+const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
 
 const Work = () => {
     const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
@@ -19,8 +20,8 @@ const Work = () => {
     const [choice, setChoice] = useState("0"); // 전체 or 작업자 조회
 
     const fetchData = async () => {
-        const response = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
-        const workerresponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`);
+        const response = await axios.get(`${backend_url}:${port}/work`);
+        const workerresponse = await axios.get(`${backend_url}:${port}/worker`);
         const fetchedTodoList = response.data.workinfos;
         const filteredTodoList = (choice === "0" ? fetchedTodoList : fetchedTodoList.filter(todo => todo.workerID === workerID));
         setTodoList(filteredTodoList);

@@ -7,6 +7,7 @@ import './Dashboard.css';
 import { WorkerContext } from './WorkerContext';
 
 const port = 9000;
+const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
 
 function Dashboard() {
     const [totalWork , setTotalWork] = useState(0);
@@ -21,19 +22,19 @@ function Dashboard() {
 
     const fetchData = async () => {
         try {
-            const workResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalwork`);
+            const workResponse = await axios.get(`${backend_url}:${port}/dashboard/totalwork`);
             setTotalWork(workResponse.data.totalWork);
             setTotalDoneWork(workResponse.data.doneWork);
             
-            const myWorkResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalwork/worker/${workerID}`);
+            const myWorkResponse = await axios.get(`${backend_url}:${port}/dashboard/totalwork/worker/${workerID}`);
             setMyTotalWork(myWorkResponse.data.totalWork);
             setMyTotalDoneWork(myWorkResponse.data.doneWork);
             
-            const issueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalissue`);
+            const issueResponse = await axios.get(`${backend_url}:${port}/dashboard/totalissue`);
             setTotalIssue(issueResponse.data.totalIssue);
             setTotalDoneIssue(issueResponse.data.doneIssue);
             
-            const myIssueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/dashboard/totalissue/worker/${workerID}`);
+            const myIssueResponse = await axios.get(`${backend_url}:${port}/dashboard/totalissue/worker/${workerID}`);
             setMyTotalIssue(myIssueResponse.data.totalIssue);
             setMyTotalDoneIssue(myIssueResponse.data.doneIssue);
         } catch (error) {

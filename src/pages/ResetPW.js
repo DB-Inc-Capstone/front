@@ -5,6 +5,7 @@ import axios from "axios";
 import './ResetPW.css'
 
 const port = 9000;
+const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
 
 const ResetPW = () => {
     const [id, setID] = useState('');
@@ -23,7 +24,7 @@ const ResetPW = () => {
         e.preventDefault();
 
         try { // /worker/checkid 로 변경
-            const response = await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker/valid`, {
+            const response = await axios.post(`${backend_url}:${port}/worker/valid`, {
                 username: id,
                 phoneNumber: phone_number
             });
@@ -51,7 +52,7 @@ const ResetPW = () => {
         }
 
         try {
-            const response = await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker/resetpw`, {
+            const response = await axios.post(`${backend_url}:${port}/worker/resetpw`, {
                 username: id,
                 phoneNumber: phone_number,
                 password: pswd

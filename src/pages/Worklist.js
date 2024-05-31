@@ -8,6 +8,7 @@ import "./Worklist.css";
 import { WorkerContext } from './WorkerContext';
 
 const port = 9000;
+const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
 
 const Worklist = () => {
   const [todoList, setTodoList] = useState([]);
@@ -27,7 +28,7 @@ const Worklist = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`, editWork);
+      await axios.put(`${backend_url}:${port}/work/${selectedWork.workID}`, editWork);
       // 수정된 내용을 선택된 작업에 반영
       setSelectedWork({ ...selectedWork, ...editWork });
       fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
@@ -44,7 +45,7 @@ const Worklist = () => {
   // 작업 삭제 처리 함수
   const handleDeleteWork = async () => {
     try {
-      await axios.delete(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedWork.workID}`);
+      await axios.delete(`${backend_url}:${port}/work/${selectedWork.workID}`);
       fetchData(); // 작업 삭제 후 작업 목록을 다시 불러옵니다.
     } catch (error) {
       console.error("Error deleting work:", error);
@@ -55,8 +56,8 @@ const Worklist = () => {
   };
 
   const fetchData = async () => {
-    const response = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
-    const workerresponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`);
+    const response = await axios.get(`${backend_url}:${port}/work`);
+    const workerresponse = await axios.get(`${backend_url}:${port}/worker`);
     const fetchedTodoList = response.data.workinfos;
     const filteredTodoList = (choice === "0" ? fetchedTodoList : fetchedTodoList.filter(todo => todo.workerID === workerID));
     setTodoList(filteredTodoList);

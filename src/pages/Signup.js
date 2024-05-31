@@ -5,6 +5,7 @@ import axios from "axios";
 import './Signup.css';
 
 const port = 9000;
+const backend_url = 'http://ec2-43-202-33-178.ap-northeast-2.compute.amazonaws.com';
 
 const Signup = () => {
   const [id, setId] = useState('');
@@ -23,7 +24,7 @@ const Signup = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`, {
+      const response = await axios.post(`${backend_url}:${port}/worker`, {
         username: id,
         password: password,
         nickname: name,
