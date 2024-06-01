@@ -39,7 +39,7 @@ jobs:
       run: docker push ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
 
 
-    # 아마존 EC2 로 배포 (임시용 / 이후 쿠버네티스 적용 예정)
+    # 아마존 EC2 로 배포 
     - name: Deploy to EC2
       if: success()
       uses: appleboy/ssh-action@master
@@ -51,6 +51,5 @@ jobs:
           git clone https://github.com/DB-Inc-Capstone/.github.git
           cd .github
           git pull origin main
-          sudo docker-compose down
-          sudo docker-compose pull
-          sudo docker-compose up -d
+          sudo docker pull ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
+          sudo docker-compose up -d --no-deps --build ${{ env.DOCKER_IMAGE_NAME }}
