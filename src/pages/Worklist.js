@@ -8,7 +8,7 @@ import "./Worklist.css";
 import { WorkerContext } from './WorkerContext';
 
 const port = 9000;
-const backend_url = `http://ec2-43-201-250-5.ap-northeast-2.compute.amazonaws.com:${port}`;
+const backend_url = `http://ec2-3-36-78-107.ap-northeast-2.compute.amazonaws.com:${port}`;
 
 const Worklist = () => {
   const [todoList, setTodoList] = useState([]);
