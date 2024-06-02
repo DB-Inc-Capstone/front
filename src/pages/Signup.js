@@ -5,7 +5,7 @@ import axios from "axios";
 import './Signup.css';
 
 const port = 9000;
-const backend_url = `http://ec2-3-36-78-107.ap-northeast-2.compute.amazonaws.com:${port}`;
+const backend_url = `http://ec2-52-79-149-161.ap-northeast-2.compute.amazonaws.com:${port}`;
 
 const Signup = () => {
   const [id, setId] = useState('');
