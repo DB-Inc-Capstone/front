@@ -8,6 +8,7 @@ import './Login.css'
 const port = 9000;
 const backend_url = `http://ec2-52-79-149-161.ap-northeast-2.compute.amazonaws.com:${port}`;
 
+
 const Login = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
