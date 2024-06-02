@@ -82,7 +82,7 @@ const Issue = () => {
     const issueState = e.target.issueState.value;
     const targetID = e.target.workerID.value;
 
-    await axios.post(`${backend_url}:${port}/work/issue`, { 
+    await axios.post(`${backend_url}/work/issue`, { 
       issueTitle, 
       workID, 
       issueContent, 
