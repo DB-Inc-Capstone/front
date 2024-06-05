@@ -8,7 +8,7 @@ import "./Work.css";
 import { WorkerContext } from "./WorkerContext";
 
 const port = 9000;
-const backend_url = `http://ec2-3-38-211-51.ap-northeast-2.compute.amazonaws.com:${port}`;
+const backend_url = `http://ec2-13-124-201-144.ap-northeast-2.compute.amazonaws.com:${port}`;
 
 const Work = () => {
     const [showAddTodo, setShowAddTodo] = useState(false); // 작업 추가창 표시 여부를 관리하는 상태
