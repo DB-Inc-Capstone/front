@@ -6,6 +6,7 @@ import axios from "axios";
 import './Login.css'
 
 const port = 9000;
+const backend_url = `http://ec2-13-124-201-144.ap-northeast-2.compute.amazonaws.com:${port}`;
 
 const Login = () => {
     const [id, setId] = useState('');
@@ -26,13 +27,13 @@ const Login = () => {
         e.preventDefault();
         
         try {
-            const response = await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker/login`, {
+            const response = await axios.post(`${backend_url}/worker/login`, {
                 username: id,
                 password: password
             });
             setErrorMessage(response.data.message);
             console.log('Login successful!', response.data);
-            const workers = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`);
+            const workers = await axios.get(`${backend_url}/worker`);
             const workerlist = workers.data.workers;
             const targetWorker = workerlist.filter(worker => worker.username === id);
             const workerID = targetWorker[0].id;

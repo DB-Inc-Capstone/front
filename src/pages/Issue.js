@@ -5,6 +5,7 @@ import MenuBar from "../components/MenuBar";
 import "./Issue.css";
 
 const port = 9000;
+const backend_url = `http://ec2-13-124-201-144.ap-northeast-2.compute.amazonaws.com:${port}`;
 
 const Issue = () => {
   const [issueList, setIssueList] = useState([]);
@@ -25,7 +26,7 @@ const Issue = () => {
   const handleSaveEdit = async () => {
     try {
       // 수정된 내용을 서버에 반영
-      await axios.put(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue/${selectedIssue.issueID}`, editIssue);
+      await axios.put(`${backend_url}/work/issue/${selectedIssue.issueID}`, editIssue);
       // 수정된 내용을 선택된 작업에 반영
       setSelectedIssue({ ...selectedIssue, ...editIssue });
       fetchData(); // 작업 추가 후 작업 목록을 다시 불러옵니다.
@@ -41,7 +42,7 @@ const Issue = () => {
 
   const handleDeleteIssue = async () => {
     try {
-      await axios.delete(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/${selectedIssue.workID}/issue/${selectedIssue.issueID}`);
+      await axios.delete(`${backend_url}/work/${selectedIssue.workID}/issue/${selectedIssue.issueID}`);
       fetchData(); // 작업 삭제 후 작업 목록을 다시 불러옵니다.
     } catch (error) {
       console.error("Error deleting issue:", error);
@@ -53,13 +54,12 @@ const Issue = () => {
 
   const fetchData = async () => {
     try {
-      const workResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work`);
-      const issueResponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`);
-      const workerresponse = await axios.get(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/worker`);
+      const workResponse = await axios.get(`${backend_url}/work`);
+      const issueResponse = await axios.get(`${backend_url}/work/issue`);
+      const workerresponse = await axios.get(`${backend_url}/worker`);
       const workList = workResponse.data.workinfos;
       const issueList = issueResponse.data.issueinfos;
       const workerList = workerresponse.data.workers;
-      const workIDList = workList.filter(work => work.workerID === workerID).map(work => work.workID);
       const filteredissueList = (choice === "0" ? issueList : issueList.filter(issue => issue.workerID === workerID));
 
       setWorkList(workList);
@@ -81,7 +81,7 @@ const Issue = () => {
     const issueState = e.target.issueState.value;
     const targetID = e.target.workerID.value;
 
-    await axios.post(`http://ec2-43-203-124-16.ap-northeast-2.compute.amazonaws.com:${port}/work/issue`, { 
+    await axios.post(`${backend_url}/work/issue`, { 
       issueTitle, 
       workID, 
       issueContent, 
